@@ -18,7 +18,7 @@
 
 <script setup>
 import axios from 'axios';
-import { defineComponent, ref,reactive,h } from "vue"
+import { ref,reactive,h } from "vue"
 import { NButton, NIcon, NInput, NAvatar, useDialog, useMessage,} from "naive-ui"
 import { useIndexStore } from '../store/index.js'
 import square from '../components/icons/square.vue';
@@ -36,12 +36,6 @@ const spinnerplay = (() => {
     itemList.showConvert()
 });
 
-const toList = (() => {
-    let meanlist = searchData['mean']
-
-    return meanlist
-})
-
 const getData = ((word) => {
     if (!word) {
         message.error("단어를 입력해주세요")
@@ -53,18 +47,19 @@ const getData = ((word) => {
         console.log(word)
         axios.post("/search", { word: wordToLower })
             .then((res) => {
+                searchData['mean']
                 searchData = res.data;
-                //console.log(res);
-                //console.log("wordheader res.data line 55 : ", searchData);
                 if (searchData['check'] != -1) {
-                    sortData = toList()
+                    sortData = searchData['mean']
                 }
             })
             .catch(error => {
                 console.log("wordheader error line 55: ",error)
             })
+            // searchData['check'] == 0: 정상적인 리턴, -1: 검색결과가 없음, 1: 잘못된 단어로 비슷한 단어들 리턴
             .finally(() => {
                 spinnerplay()
+                // 검색결과가 없음
                 if (searchData['check'] == -1) {
                     dialog.create({
                         title: () =>
@@ -78,39 +73,25 @@ const getData = ((word) => {
                         },
                     })
                 }
+                // 정삭적인 단어의 결과
                 else if (searchData['check'] == 0) {
-                    //console.log(sortData)
                     if (sortData) {
                         dialog.create({
-                            title: () =>
-                                h("h2", word)
-                            ,
+                            title: () =>h("h2", word),
                             content: () =>
-                                h(
-                                    "h3",
-                                    sortData.map((data) => {
+                                h("h3", sortData.map((data) => {
                                         return h('div', data)
                                     })
                                 ),
                             positiveText: 'add',
                             onPositiveClick: () => {
-                                let addWordList = { mean: sortData, word: word }
-                                //console.log(addWordList)
-                                itemList.addWord(addWordList)
+                                itemList.addWord(word,sortData)
                                 message.success("단어가 추가 되었습니다");
-
-                                axios.get(`/insert/${word}`)
-                                    .then((res) => {
-                                        //console.log(res)
-                                    })
-                                    .catch((error) => {
-                                        console.log(error)
-                                    })
                             },
                             maskClosable: false,
-                            onMaskClick: () => {
-                                message.error("버튼을 클릭 해주세요");
-                            },
+                            // onMaskClick: () => {
+                            //     message.error("버튼을 클릭 해주세요");
+                            // },
                             onEsc: () => {
                                 message.success("cancel", {
                                     showIcon: false
@@ -124,21 +105,20 @@ const getData = ((word) => {
                             },
                             icon: () => h(square, { color: "black" })
                         })
-                        console.log(itemList.words)
                     }
                     else {
                         message.error("없는 단어 입니다")
                     }
                 }
+                // relate word
                 else {
-                    console.log("relate word")
                     dialog.create({
                         title: () =>
                             h("h2", "잘못된 단어 입니다"),
                         content: () =>
                             h(
                                 "h3", [
-                                h('div', [word,"와 비슷한 단어들"]),
+                                h('div', [word, "와 비슷한 단어들"]),
                                 sortData.map((data) => {
                                     return h('div', data)
                                 })
@@ -149,9 +129,7 @@ const getData = ((word) => {
                         onMaskClick: () => {
                             message.error("버튼을 클릭 해주세요");
                         },
-                
                     })
-     
                 }
             })
     }

@@ -1,11 +1,12 @@
 <template>
     <n-card header-style="padding-top:0; padding-bottom:0; " :bordered="false"
-        content-style="padding:0 0 0 30px; display: flex; flex-direction:column; justify-content:center" footer-style="display: flex;
-    align-items: start;
-    justify-content: right;
-    margin: 0;
-    padding-top: 0;
-    padding-bottom: 0;">
+        content-style="padding:0 0 0 30px; display: flex; flex-direction:column; justify-content:center"
+        footer-style="display: flex;
+        align-items: start;
+        justify-content: right;
+        margin: 0;
+        padding-top: 0;
+        padding-bottom: 0;">
         <template #header>
             <div class="word-text">
                 {{word}}
@@ -80,18 +81,21 @@ const detail_word = ((means,word) => {
             ),
         positiveText: 'delete',
         onPositiveClick: () => {
-            axios.get("/delete", { params: { word: word } })
-                .then((res) => {
-                    //console.log("WordCard_delete_res(line 83): ", res)
-                    //console.log("itemLIst.word line 84 : ", itemList.words)
-                    itemList.deletWord(props.cardIndex)
-                })
-                .catch((err) => {
-                    console.log("WordCard_delete_err(line 86)", err)
-                })
+            itemList.deletWord(word,props.cardIndex)
         },
         negativeText: 'cancel',
-        icon: () => h(square,{color:"black"})
+        icon: () => h(square, { color: "black" }),
+        maskClosable: false,
+        onEsc: () => {
+            message.success("cancel", {
+                showIcon: false
+            });
+        },
+        onNegativeClick: () => {
+            message.success("cancel", {
+                showIcon: false
+            });
+        },
 
     })
  
