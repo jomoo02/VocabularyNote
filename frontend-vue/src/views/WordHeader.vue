@@ -1,7 +1,7 @@
 <template>
     <div class="header-container">
         <div class="symbol-container">
-            <logo></logo>
+            <main-logo></main-logo>
             <span class="symbol-content">voca</span>
         </div>
         <div class="inputBox-container">
@@ -10,7 +10,7 @@
         </div>
         <div class="searchBtn-container">
             <n-button text class="searchBtn" @click="getData(searchWord), spinnerplay()">
-                <search></search>
+                <search-icon></search-icon>
             </n-button>
         </div>
     </div>
@@ -21,9 +21,10 @@ import axios from 'axios';
 import { ref,reactive,h } from "vue"
 import { NButton, NIcon, NInput, NAvatar, useDialog, useMessage,} from "naive-ui"
 import { useIndexStore } from '../store/index.js'
-import square from '../components/icons/square.vue';
-import logo from '../components/icons/logo.vue';
-import search from '../components/icons/search.vue';
+import SquareIcon from '../components/icons/SquareIcon.vue';
+import MainLogo from '../components/icons/MainLogo.vue';
+import SearchIcon from '../components/icons/SearchIcon.vue';
+
 
 const itemList = useIndexStore();
 const dialog = useDialog();
@@ -67,7 +68,7 @@ const getData = ((word) => {
                         content: () =>
                             h("h3", "검색 결과가 없습니다"),
                         maskClosable: false,
-                        icon: () => h(square, { color: "black" }),
+                        icon: () => h(SquareIcon, { color: "black" }),
                         onMaskClick: () => {
                             message.error("버튼을 클릭 해주세요");
                         },
@@ -103,7 +104,7 @@ const getData = ((word) => {
                                     showIcon: false
                                 });
                             },
-                            icon: () => h(square, { color: "black" })
+                            icon: () => h(SquareIcon, { color: "black" })
                         })
                     }
                     else {
@@ -125,7 +126,7 @@ const getData = ((word) => {
                                 ]
                             ),
                         maskClosable: false,
-                        icon: () => h(square, { color: "black" }),
+                        icon: () => h(SquareIcon, { color: "black" }),
                         onMaskClick: () => {
                             message.error("버튼을 클릭 해주세요");
                         },

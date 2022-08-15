@@ -1,7 +1,6 @@
 <template>
     <n-card header-style="padding-top:0; padding-bottom:0; " :bordered="false"
-        content-style="padding:0 0 0 30px; display: flex; flex-direction:column; justify-content:center"
-        footer-style="display: flex;
+        content-style="padding:0 0 0 30px; display: flex; flex-direction:column; justify-content:center" footer-style="display: flex;
         align-items: start;
         justify-content: right;
         margin: 0;
@@ -15,14 +14,14 @@
         <template #header-extra>
             <div class="smallscrenn-check-btn-box">
                 <n-button class="smallscrenn-check-btn" text @click="detail_word(means,word)">
-                    <check></check>
+                    <check-icon></check-icon>
                 </n-button>
             </div>
         </template>
         <template #footer>
             <div class="largescreen-check-btn-box">
                 <n-button class="largescreen-check-btn" text @click="detail_word(means,word)">
-                    <check></check>
+                    <check-icon></check-icon>
                 </n-button>
             </div>
         </template>
@@ -54,9 +53,9 @@ import axios from 'axios';
 import { defineComponent,h } from "vue"
 import { NButton, NCard, NH4, NIcon, useMessage, useDialog, NAvatar } from 'naive-ui'
 import { useIndexStore } from '../store/index.js'
-import { rgb2hsl } from 'seemly';
-import square from './icons/square.vue';
-import check from './icons/check.vue'
+import SquareIcon from './icons/SquareIcon.vue';
+import CheckIcon  from './icons/CheckIcon.vue';
+
 const props = defineProps({
     means: Array,
     word: String,
@@ -84,7 +83,7 @@ const detail_word = ((means,word) => {
             itemList.deletWord(word,props.cardIndex)
         },
         negativeText: 'cancel',
-        icon: () => h(square, { color: "black" }),
+        icon: () => h(SquareIcon, { color: "black" }),
         maskClosable: false,
         onEsc: () => {
             message.success("cancel", {

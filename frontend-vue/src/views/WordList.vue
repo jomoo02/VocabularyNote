@@ -1,9 +1,9 @@
 <template>
-    <div v-for="(item, index) in itemList.words" class="card-container">
+    <div v-for="(item, index) in itemList.words" :key="item.index" class="card-container">
         <n-messageProvider>
             <n-dialogProvider>
-                <WordCard v-bind:word="item.word" v-bind:means="item.mean" v-bind:cardIndex="index">
-                </WordCard>
+                <word-card v-bind:word="item.word" v-bind:means="item.mean" v-bind:cardIndex="index">
+                </word-card>
             </n-dialogProvider>
         </n-messageProvider>
     </div>
