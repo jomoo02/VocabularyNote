@@ -13,7 +13,7 @@
         </template>
         <template #header-extra>
             <div class="smallscrenn-check-btn-box">
-                <n-button class="smallscrenn-check-btn" text @click="detail_word(means,word)">
+                <n-button class="smallscrenn-check-btn" text @click="detail_word(means,word)" >
                     <check-icon></check-icon>
                 </n-button>
             </div>
@@ -50,7 +50,7 @@
 
 <script setup>
 import axios from 'axios';
-import { defineComponent,h } from "vue"
+import { defineComponent,h,ref } from "vue"
 import { NButton, NCard, NH4, NIcon, useMessage, useDialog, NAvatar } from 'naive-ui'
 import { useIndexStore } from '../store/index.js'
 import SquareIcon from './icons/SquareIcon.vue';
@@ -60,12 +60,12 @@ const props = defineProps({
     means: Array,
     word: String,
     cardIndex: Number,
+    meansLength:Number,
 })
 const itemList = useIndexStore()
 const message = useMessage()
 const dialog = useDialog()
-let meansLength = props.means.length;
-
+let inputmean = ref('')
 const detail_word = ((means,word) => {
     dialog.create({
         title: () =>
@@ -74,23 +74,42 @@ const detail_word = ((means,word) => {
         content: () =>
             h(
                 "h3",
-                means.map((data) => {
+                [means.map((data) => {
                     return h('div', data)
-                })
+                }), h("input", {
+                    value: inputmean.value, onInput(e) {
+                    inputmean.value = e.target.value
+                }})]
             ),
-        positiveText: 'delete',
+        positiveText: 'append',
         onPositiveClick: () => {
-            itemList.deletWord(word,props.cardIndex)
+            console.log(inputmean.value)
+            if (inputmean.value == '') {
+                message.error('not exist')
+            }
+            else {
+                axios.post("/appendmean", { word: word, mean: inputmean.value })
+                    .then((res) => {
+                        console.log(res)
+                        itemList.words[props.cardIndex]['mean'].push(inputmean.value)
+                        inputmean.value = ''
+
+                    })
+                    .catch((err) => {
+                        console.log("appendmean error")
+                        console.log(err)
+                    })
+            }
         },
-        negativeText: 'cancel',
+        negativeText: 'delete',
+        onNegativeClick: () => {
+            itemList.deletWord(word, props.cardIndex)
+        },
+
         icon: () => h(SquareIcon, { color: "black" }),
         maskClosable: false,
+
         onEsc: () => {
-            message.success("cancel", {
-                showIcon: false
-            });
-        },
-        onNegativeClick: () => {
             message.success("cancel", {
                 showIcon: false
             });

@@ -69,5 +69,14 @@ def delete_word():
     return word+"delete success"
 
 
+@app.route('/appendmean', methods=['POST'])
+def insert_mean():
+    req = request.get_json()
+    mean = req['mean']
+    word = req['word']
+    word_db.word_mean_insert(word, mean)
+    return "sucess"
+
+
 if __name__ == '__main__':  # 모듈이 아니라, 해당 코드 직접 실행시만 실행
     app.run(host="0.0.0.0", port="8081")

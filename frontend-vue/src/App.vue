@@ -30,7 +30,11 @@ const itemList = useIndexStore();
         <n-scrollbar>
           <main>
             <section>
-              <WordList />
+              <n-message-provider>
+                <n-dialog-provider>
+                  <WordList />
+                </n-dialog-provider>
+              </n-message-provider>
             </section>
           </main>
         </n-scrollbar>

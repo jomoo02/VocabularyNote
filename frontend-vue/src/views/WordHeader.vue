@@ -18,7 +18,7 @@
 
 <script setup>
 import axios from 'axios';
-import { ref,reactive,h } from "vue"
+import { ref,reactive,h,nextTick } from "vue"
 import { NButton, NIcon, NInput, NAvatar, useDialog, useMessage,} from "naive-ui"
 import { useIndexStore } from '../store/index.js'
 import SquareIcon from '../components/icons/SquareIcon.vue';
@@ -88,6 +88,8 @@ const getData = ((word) => {
                             onPositiveClick: () => {
                                 itemList.addWord(word,sortData)
                                 message.success("단어가 추가 되었습니다");
+   
+                                
                             },
                             maskClosable: false,
                             // onMaskClick: () => {

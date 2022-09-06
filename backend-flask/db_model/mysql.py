@@ -1,3 +1,4 @@
+from re import search
 from db_model import mysqlConn
 MYSQL_CONN = mysqlConn.MYSQL_CONN
 
@@ -34,6 +35,19 @@ class word_db():
         return findWord
 
     @staticmethod
+    def word_list_find(word):
+        mysql_db = conn_mysqldb()
+        db_cursor = mysql_db.cursor()
+        sql = "SELECT * FROM word_list WHERE WORD = '" + str(word) + "'"
+
+        db_cursor.execute(sql)
+        searchWord = db_cursor.fetchone()
+        if not searchWord:
+            return None
+        findWord = {'word': searchWord[0], 'mean': searchWord[1]}
+        return findWord
+
+    @staticmethod
     def search_word_list_insert(word, mean):
         searchWord = word_db.find(word)
         if searchWord == None:
@@ -65,3 +79,25 @@ class word_db():
         deleted = db_cursor.execute(sql, word)
         mysql_db.commit()
         return deleted
+
+    @staticmethod
+    def word_mean_insert(word, mean):
+        searchWord = word_db.word_list_find(word)
+        means = str(searchWord['mean'])+'@'+mean
+        mysql_db = conn_mysqldb()
+        db_cursor = mysql_db.cursor()
+        sql = "UPDATE word_list SET MEAN = %s WHERE WORD=%s"
+        inserted = (means, word)
+        db_cursor.execute(sql, inserted)
+        mysql_db.commit()
+
+    # @staticmethod
+    # def search_word_mean_insert(word, mean):
+    #     searchWord = word_db.find(word)
+    #     means = str(searchWord['mean'])+'@'+mean
+    #     mysql_db = conn_mysqldb()
+    #     db_cursor = mysql_db.cursor()
+    #     sql = "UPDATE search_word_list SET MEAN = %s WHERE WORD=%s"
+    #     inserted = (means, word)
+    #     db_cursor.execute(sql, inserted)
+    #     mysql_db.commit()

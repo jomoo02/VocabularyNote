@@ -6,7 +6,7 @@ export const useIndexStore = defineStore("wordList", {
         words: reactive([]),
         show: ref(false),
     }),
-
+    
     actions: {
         // words에 단어 추가
         addWord2(word) {
@@ -34,6 +34,7 @@ export const useIndexStore = defineStore("wordList", {
                 .then((res) => {
                     console.log("delete",res)
                     this.words.splice(index, 1)
+                    console.log(this.words)
                 })
                 .catch((err) => {
                     console.log("WordCard_delete_err(line 86)", err)
