@@ -78,8 +78,9 @@ const detail_word = ((means,word) => {
                     return h('div', data)
                 }), h("input", {
                     value: inputmean.value, onInput(e) {
-                    inputmean.value = e.target.value
-                }})]
+                        inputmean.value = e.target.value
+                    }
+                })]
             ),
         positiveText: 'append',
         onPositiveClick: () => {
@@ -102,11 +103,13 @@ const detail_word = ((means,word) => {
             }
         },
         negativeText: 'delete',
+        negativeButtonProps: {ghost:false,color:"#BF414E"},
+ 
         onNegativeClick: () => {
             itemList.deletWord(word, props.cardIndex)
         },
 
-        icon: () => h(SquareIcon, { color: "black" }),
+        icon: () => h(SquareIcon, { color: "black"}),
         maskClosable: false,
 
         onEsc: () => {

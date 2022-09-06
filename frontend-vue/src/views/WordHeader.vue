@@ -92,9 +92,9 @@ const getData = ((word) => {
                                 
                             },
                             maskClosable: false,
-                            // onMaskClick: () => {
-                            //     message.error("버튼을 클릭 해주세요");
-                            // },
+                            onMaskClick: () => {
+                                message.error("버튼을 클릭 해주세요");
+                            },
                             onEsc: () => {
                                 message.success("cancel", {
                                     showIcon: false
@@ -106,6 +106,7 @@ const getData = ((word) => {
                                     showIcon: false
                                 });
                             },
+                            negativeButtonProps:{ghost:false,color:"#898989"},
                             icon: () => h(SquareIcon, { color: "black" })
                         })
                     }
