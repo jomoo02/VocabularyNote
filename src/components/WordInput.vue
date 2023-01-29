@@ -12,10 +12,11 @@
                 <button @click="wordSearch" class="inputTag"><Icon icon="ion:search" width="24" height="24"/></button>
             </div>
             <!-- 최근 검색한 단어 -->
-            <div v-if="recentWordFoucs" class="absolute w-full bg-white  inputTag border border-green-500">
-                <div class="text-[12px] text-slate-500 font-semibold px-2 py-0.5">최근 검색한 단어</div>
-                <div v-for="word in store.recentWordsDic" class=" px-2 ">
-                    <span @click="wordSearch(word)" class="cursor-pointer text-sm">{{ word }}</span>
+            <div v-show="recentWordFoucs" class="absolute w-full bg-white inputTag border border-green-500">
+                <div class="text-[12px] text-slate-500 font-semibold px-2 py-0.5 inputTag">최근 검색한 단어</div>
+                <div v-for="(word, index) in store.recentWordsDic" :key="index" class=" px-2 flex items-center justify-between inputTag">
+                    <button><span @click="wordSearch(word)" class="text-sm ">{{ word }}</span></button>
+                    <button @click="store.recentWordDelete(index)" class="inputTag flex"><Icon icon="ph:x"></Icon></button>
                 </div>
             </div>
         </div>
@@ -34,6 +35,7 @@
 
 
 <script setup>
+
 import { onMounted, ref, onBeforeUnmount } from 'vue';
 import { Icon } from '@iconify/vue';
 import axios from 'axios';
@@ -47,14 +49,15 @@ const recentWordFoucs = ref(false);
 const word = ref('');
 const means = ref('');
 
-const outFocusInput = (e) => {
-    if (!e.target.classList.contains('inputTag')) {
-        recentWordFoucs.value = false;
-    }
-}
 const focusInput = () => {
     recentWordFoucs.value = true;
 }
+const outFocusInput = (e) => {
+    if (e.target.tagName !== 'svg' && e.target.tagName !== 'path' && !e.target.classList.contains('inputTag')) {
+        recentWordFoucs.value = false;
+    }
+}
+
 onMounted(() => {
     // wordSearch_input.value.focus();
     console.log("onMounted:")

@@ -58,6 +58,14 @@ export const useStoreStore = defineStore('store', () => {
     localRecentSearchWords.value = [searchWord, ...recentWords];
     recentWordsDic.value = [searchWord, ...recentWords];
   }
+
+  // 최근 단어 삭제
+  function recentWordDelete(index) {
+    const recentWords = [...localRecentSearchWords.value.slice(0, index), ...localRecentSearchWords.value.slice(index+1)];
+    localRecentSearchWords.value = [...recentWords];
+    recentWordsDic.value = [...recentWords];
+  }
+
   // word add
   function wordAdd(word, means) {
     if (word in wordDic.value) {
@@ -129,12 +137,14 @@ export const useStoreStore = defineStore('store', () => {
     detailModal.value = true;
 }
 
+  // 휴지통 단어 디테일 
   function trashCanWordDetail(targetIndex) {
     const { word, means, afterTime, time} = localTrashCan.value[targetIndex];
     const detailTrashCanWord = {word:word, means:means.split(','), time:time, afterTime:afterTime, index:targetIndex};
     return detailTrashCanWord
   }
 
+  // 휴지통 단어 완전 삭제
   function trashCanWordDelete(targetIndex) {
     trashCanDic.value = [...localTrashCan.value.slice(0, targetIndex), ...localTrashCan.value.slice(targetIndex+1)];
     console.log(targetIndex);
@@ -142,14 +152,16 @@ export const useStoreStore = defineStore('store', () => {
     localTrashCan.value = [...trashCanDic.value];
   }
 
+  // 휴지통 단어 복원
   function trashCanWordRestore(targetIndex) {
     const word = localTrashCan.value[targetIndex].word;
     const means = localTrashCan.value[targetIndex].means;
     wordAdd(word,means);
     trashCanWordDelete(targetIndex)
-
   }
 
 
-  return {detailWord, wordDic, trashCanDic, inputModal, detailModal, trashCanWordModal, screenTransition, recentWordsDic,wordArr, trashCanWordRestore, trashCanWordDelete, trashCanWordDetail, getWordMeans, wordRecent, wordAdd, setWordDic, wordDelete, wordDetail, contentChange, wordCheck };
+
+
+  return {detailWord, wordDic, trashCanDic, inputModal, detailModal, trashCanWordModal, screenTransition, recentWordsDic,wordArr, trashCanWordRestore, trashCanWordDelete, trashCanWordDetail, getWordMeans, wordRecent, wordAdd, setWordDic, wordDelete, wordDetail, contentChange, wordCheck, recentWordDelete };
 })
