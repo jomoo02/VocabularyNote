@@ -12,6 +12,7 @@ export default defineConfig({
     }
   },
   server: {
+    port:8081,
     proxy: {
       '/search': {
         target: 'https://suggest.dic.daum.net',

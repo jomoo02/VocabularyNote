@@ -1,8 +1,8 @@
 <script setup>
 import { useStoreStore } from '@/stores/store';
 import { Icon } from '@iconify/vue';
-import { onKeyStroke,useFocus } from '@vueuse/core'
-import { ref } from 'vue';
+import { onKeyStroke } from '@vueuse/core'
+import { ref, toRefs, onMounted, onUnmounted } from 'vue';
 const store = useStoreStore();
 const modalWrap = ref();
 const props = defineProps({
@@ -11,15 +11,29 @@ const props = defineProps({
     time: String,
 })
 console.log(props.word, props.means);
+
+const { word, means } = toRefs(props);
+console.log(word, means)
 onKeyStroke(['Escape'], (e) => {
     if (store.inputModal ===  true) {
         store.inputModal = false;
     }
 });
 onKeyStroke(['Enter'], (e) => {
-    store.wordAdd();
+    store.wordAdd(word.value, means.value);
+
 });
-// const { focosed } = useFocus(modalWrap, {initialValue: true})
+onMounted(() => {
+    // document.body.classList.add('fixed',`top-[-${topPx}px]`, 'overflow-y-scroll', 'w-full');
+    document.body.classList.add('overflow-y-hidden');
+
+})
+onUnmounted(() => {
+    // document.body.classList.remove('fixed',`top-[-${topPx}px]`, 'overflow-y-scroll', 'w-full');
+    document.body.classList.remove('overflow-y-hidden');
+
+
+})
 </script>
 
 <template>
@@ -37,7 +51,7 @@ onKeyStroke(['Enter'], (e) => {
                 <!-- 추가, 취소 버튼  -->
                 <div class="flex absolute bottom-0 right-0 p-6 gap-x-4">
                     <button @click="store.inputModal = false" class="py-1 px-2.5 rounded-md text-white font-semibold bg-neutral-400 hover:bg-neutral-500 ">cancel</button>
-                    <button @click="store.wordAdd" class="py-1 px-2.5 rounded-md text-white font-semibold bg-emerald-400  hover:bg-emerald-600">add</button>
+                    <button @click="store.wordAdd(word, means)" class="py-1 px-2.5 rounded-md text-white font-semibold bg-emerald-400  hover:bg-emerald-600">add</button>
                 </div>
             </div>
         </div>

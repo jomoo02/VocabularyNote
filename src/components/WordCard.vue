@@ -1,32 +1,49 @@
 <script setup>
-import { useStoreStore } from '../stores/store';
+import { Icon } from '@iconify/vue'
+import { useStoreStore } from '../stores/store'
+import { ref, toRef, onUpdated } from 'vue'
+
 const props = defineProps({
     word: String,
-    means: Array,
-    time: String,
-    check: Boolean,
+    means: String,
+    check: Boolean
 })
+const emits = defineEmits(['detail']);
+
+
+
 const store = useStoreStore();
 
-function wordDetail() {
-    store.wordDetail({word: props.word, means: [...props.means], time: props.time, check: props.check});
-}   
+const word = toRef(props,'word');
+const means = toRef(props,'means');
+const check = ref(props.check);
+
+
+function transmit() {
+    emits('detail', word.value);
+}
+
 </script>
 
 <template>
     <div class="flex flex-col" >
         <!-- word -->
-        <div class="xl:w-2/12" 
-        :class="props.check === false ? 'wordcheck_active':''">
-           <span class="cursor-pointer font-bold  text-3xl h-[64px] leading-[64px] hover:text-4xl hover:leading-[64px]"  @click="wordDetail">{{ props.word }}</span>
+        <div class="xl:w-2/12 flex gap-x-1">
+            <!-- check Icon -->
+            <button>
+                <Icon v-if="check" class="flex items-center"  @click="check=!check, store.wordCheck(word,check)" icon="carbon:checkbox" width="37" height="37"></Icon>
+                <Icon v-else class="flex items-center" @click="check=!check, store.wordCheck(word,check)" icon="carbon:checkbox-checked" width="37" height="37"></Icon>
+            </button>
+            <!-- word -->
+            <span class=" cursor-pointer font-bold  text-3xl h-[64px] leading-[64px] hover:text-4xl hover:leading-[64px]"
+            :class="check === false ? 'wordcheck_active':''" @click="transmit" >{{ word }}</span>
         </div>
         <!-- mean -->
-        <div :class="props.check === false ? 'wordcheck_active':''">
-            <div v-for="mean in props.means" key="mean" class=" h-[32px] font-medium ml-1">
+        <div :class="check === false ? 'wordcheck_active':''">
+            <div v-for="mean in means.split(',')" key="mean" class=" h-[32px] font-medium ml-1">
             {{ mean }}
+            </div>
         </div>
-        </div>
-        <!--  -->
     </div>
 </template>
 
@@ -34,8 +51,6 @@ function wordDetail() {
 .wordcheck_active {
     text-decoration-line: line-through;
     text-decoration-thickness: 2px;
-	/* color: rgb(63 63 70); */
-    opacity: 0.7;
-
+    opacity: 0.6;
 }
 </style>

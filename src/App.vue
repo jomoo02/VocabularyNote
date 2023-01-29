@@ -1,7 +1,7 @@
 <script setup>
 import WordInput from './components/WordInput.vue';
 import WordList from './components/WordList.vue';
-import { onMounted, ref,reactive } from 'vue';
+import { onMounted, onBeforeMount } from 'vue';
 import { useStoreStore } from '@/stores/store';
 const store = useStoreStore();
 

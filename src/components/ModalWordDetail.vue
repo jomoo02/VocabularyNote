@@ -9,10 +9,8 @@ const props = defineProps({
     word: String,
     means: Array,
     time: String,
-    check: Boolean,
 
 })
-const check = ref(props.check);
 onKeyStroke(['Escape'], (e) => {
     if (store.detailModal ===  true) {
         store.detailModal = false;
@@ -40,12 +38,6 @@ onUnmounted(() => {
                 <div class="flex justify-end cursor-pointer"><Icon icon="ion:close" @click="store.detailModal = false" width="30" heihgt="30"></Icon></div>
                 <!-- word -->
                 <div class="flex my-5 pb-4 items-center">
-                    <div v-if="check" class="cursor-pointer"  @click="store.wordCheck(props.word), check=!check" >
-                        <Icon icon="carbon:checkbox" width="37" height="37"></Icon>
-                    </div>
-                    <div v-else class="cursor-pointer" @click="store.wordCheck(props.word), check=!check">
-                        <Icon icon="carbon:checkbox-checked" width="37" height="37"></Icon>
-                    </div>
                     <div class="text-4xl font-bold">{{props.word}}</div>
                 </div>
                 <!-- mean -->
