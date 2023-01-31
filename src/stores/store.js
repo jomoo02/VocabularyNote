@@ -134,7 +134,6 @@ export const useStoreStore = defineStore('store', () => {
     const word = targetWord;
     const means = wordDic.value[word].means.split(',');
     const time = wordDic.value[word].time.split(' ')[0];
-    // detailWord.value = {word: word, means: [...means], time: time};
 
     const detailWord = {word: word, means: [...means], time: time};
     return detailWord

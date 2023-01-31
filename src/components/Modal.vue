@@ -21,15 +21,15 @@ function modalExit() {
 </script>
 
 <template>
-    <div class="fixed z-[999] inset-0 max-h-screen w-full h-full bg-[#656C85CC]" tabindex="0" >
-        <div class="relative mx-10 mt-[80px] flex justify-center">
-            <div class="relative bg-white rounded-md py-6 px-6 w-2/3 md:w-1/2 h-[380px] border border-slate-400  overflow-auto">
+    <div class="fixed z-[999] inset-0 w-full h-full max-h-screen bg-[#656C85CC]" tabindex="0" >
+        <div class="relative flex justify-center mx-10 mt-[80px]">
+            <!-- w-2/3 md:w-1/2 -->
+            <div class="relative py-6 px-6 w-[480px] h-[400px] bg-white rounded-md border border-slate-400 overflow-auto">
                 <!-- 나가기 -->
                 <div class="flex justify-end"><Icon icon="ion:close" @click="modalExit" width="30" heihgt="30"></Icon></div>
                 <slot name="word"></slot>
                 <slot name="means"></slot>
                 <slot name="footer"></slot>
-
             </div>
         </div>
     </div>

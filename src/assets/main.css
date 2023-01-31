@@ -13,38 +13,28 @@
   --ml-line-interval: calc(2.3rem + 0.28rem);
   --px-to-rem: 0.063rem;
 }
+@layer components {
+  .card_word {
+    @apply cursor-pointer font-bold h-[64px] text-3xl hover:text-4xl leading-[64px] hover:leading-[64px] text-ellipsis overflow-hidden whitespace-nowrap;
+  }
+  .card_content {
+    @apply h-[32px] font-medium ml-1 text-ellipsis overflow-hidden whitespace-nowrap;
+  }
 
-
-/* #app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-
-  font-weight: normal;
-}
-
-a,
-.green {
-  text-decoration: none;
-  color: hsla(160, 100%, 37%, 1);
-  transition: 0.4s;
-}
-
-@media (hover: hover) {
-  a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
+  .modal_word {
+    @apply text-4xl my-5 pb-4 font-bold;
+  }
+  .modal_means {
+    @apply font-semibold text-lg;
+  }
+  .modal_btn {
+    @apply py-1 px-2.5 rounded-md text-white font-semibold;
+  }
+  .modal_footer {
+    @apply absolute bottom-0 right-0 p-6;
+  }
+  .modal_timetext {
+    @apply text-sm my-4 text-neutral-400;
   }
 }
 
-@media (min-width: 1024px) {
-  body {
-    display: flex;
-    place-items: center;
-  }
-
-  #app {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
-  }
-} */
