@@ -17,7 +17,7 @@ onMounted(() => {
       <WordInput></WordInput>
   </header>
 
-  <main class="pt-[32px] px-10 md:px-24 lg:px-48 2xl:px-80  min-h-screen ">
+  <main class="pt-[32px] px-10 md:px-24 lg:px-32 2xl:px-80  min-h-screen ">
     <WordList></WordList>
   </main>
 </template>

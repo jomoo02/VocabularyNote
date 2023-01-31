@@ -28,21 +28,24 @@ function transmit() {
 <template>
     <div class="flex flex-col" >
         <!-- word -->
-        <div class="xl:w-2/12 flex gap-x-1">
+        <div class="flex gap-x-1">
             <!-- check Icon -->
             <button>
                 <Icon v-if="check" class="flex items-center"  @click="check=!check, store.wordCheck(word,check)" icon="carbon:checkbox" width="37" height="37"></Icon>
                 <Icon v-else class="flex items-center" @click="check=!check, store.wordCheck(word,check)" icon="carbon:checkbox-checked" width="37" height="37"></Icon>
             </button>
             <!-- word -->
-            <span class=" cursor-pointer font-bold  text-3xl h-[64px] leading-[64px] hover:text-4xl hover:leading-[64px]"
+            <span class="cursor-pointer font-bold  text-3xl h-[64px] leading-[64px] hover:text-4xl hover:leading-[64px] text-ellipsis overflow-hidden whitespace-nowrap"
             :class="check === false ? 'wordcheck_active':''" @click="transmit" >{{ word }}</span>
         </div>
         <!-- mean -->
+     
         <div :class="check === false ? 'wordcheck_active':''">
-            <div v-for="mean in means.split(',')" key="mean" class=" h-[32px] font-medium ml-1">
-            {{ mean }}
-            </div>
+       
+                <li v-for="mean in means.split(',')" key="mean" class=" h-[32px] font-medium ml-1 text-ellipsis overflow-hidden whitespace-nowrap">
+                    {{ mean }}
+                </li>
+     
         </div>
     </div>
 </template>

@@ -12,6 +12,7 @@ export const useStoreStore = defineStore('store', () => {
   const inputModal = ref(false);
   const detailModal = ref(false);
   const trashCanWordModal = ref(false);
+  const inputElseModal = ref(false);
 
   // 휴지통, 메인화면 전환 0: 메인, 1: 휴지통
   const screenTransition = ref(0);
@@ -133,8 +134,10 @@ export const useStoreStore = defineStore('store', () => {
     const word = targetWord;
     const means = wordDic.value[word].means.split(',');
     const time = wordDic.value[word].time.split(' ')[0];
-    detailWord.value = {word: word, means: [...means], time: time};
-    detailModal.value = true;
+    // detailWord.value = {word: word, means: [...means], time: time};
+
+    const detailWord = {word: word, means: [...means], time: time};
+    return detailWord
 }
 
   // 휴지통 단어 디테일 
@@ -163,5 +166,5 @@ export const useStoreStore = defineStore('store', () => {
 
 
 
-  return {detailWord, wordDic, trashCanDic, inputModal, detailModal, trashCanWordModal, screenTransition, recentWordsDic,wordArr, trashCanWordRestore, trashCanWordDelete, trashCanWordDetail, getWordMeans, wordRecent, wordAdd, setWordDic, wordDelete, wordDetail, contentChange, wordCheck, recentWordDelete };
+  return {detailWord, wordDic, trashCanDic, inputModal, detailModal, trashCanWordModal, screenTransition, recentWordsDic,wordArr, inputElseModal, trashCanWordRestore, trashCanWordDelete, trashCanWordDetail, getWordMeans, wordRecent, wordAdd, setWordDic, wordDelete, wordDetail, contentChange, wordCheck, recentWordDelete };
 })
