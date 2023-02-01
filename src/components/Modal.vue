@@ -1,9 +1,8 @@
 <script setup>
-import { useStoreStore } from '@/stores/store';
 import { Icon } from '@iconify/vue';
 import { onMounted, onUnmounted } from 'vue';
-const store = useStoreStore();
-
+import { useModalStore } from '../stores/modal';
+const modalStore = useModalStore();
 
 onMounted(() => {
     document.body.classList.add('overflow-y-hidden');
@@ -12,12 +11,6 @@ onMounted(() => {
 onUnmounted(() => {
     document.body.classList.remove('overflow-y-hidden');
 })
-function modalExit() {
-    store.inputModal = false;
-    store.detailModal = false;
-    store.trashCanWordModal = false;
-    store.inputElseModal = false;
-}
 </script>
 
 <template>
@@ -26,10 +19,17 @@ function modalExit() {
             <!-- w-2/3 md:w-1/2 -->
             <div class="relative py-6 px-6 w-[480px] h-[400px] bg-white rounded-md border border-slate-400 overflow-auto">
                 <!-- 나가기 -->
-                <div class="flex justify-end"><Icon icon="ion:close" @click="modalExit" width="30" heihgt="30"></Icon></div>
-                <slot name="word"></slot>
-                <slot name="means"></slot>
-                <slot name="footer"></slot>
+                <div class="flex justify-end"><Icon icon="ion:close" @click="modalStore.modalExit" width="30" heihgt="30"></Icon></div>
+               
+                <div class="modal_word">
+                    <slot name="word" />
+                </div>
+
+                <slot name="means" />
+                
+                <div class="modal_footer">
+                    <slot name="footer" />
+                </div>
             </div>
         </div>
     </div>

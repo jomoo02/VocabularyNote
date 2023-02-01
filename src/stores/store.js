@@ -1,18 +1,13 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import { useStorage } from '@vueuse/core'
+import { useModalStore } from './modal'
 
 export const useStoreStore = defineStore('store', () => {
 
+  const modalStore = useModalStore();
   // modal word detail 
-  const detailWord = ref({});
-  // const detailtrashCanWord = ref({});
 
-  // input, detail modal check
-  const inputModal = ref(false);
-  const detailModal = ref(false);
-  const trashCanWordModal = ref(false);
-  const inputElseModal = ref(false);
 
   // 휴지통, 메인화면 전환 0: 메인, 1: 휴지통
   const screenTransition = ref(0);
@@ -37,12 +32,10 @@ export const useStoreStore = defineStore('store', () => {
     recentWordsDic.value = [...localRecentSearchWords.value];
 
     // 휴지통 갱신
-    // const trashCan = ref([...localTrashCan.value]);
     const date = new Date();
     const timestamp = date.getTime();
 
     const trashCan = localTrashCan.value.filter((trashCanWord) => trashCanWord.afterTimestamp > timestamp);
-    console.log(trashCan);
     trashCanDic.value = [...trashCan];
     localTrashCan.value = [...trashCan];
 
@@ -84,14 +77,13 @@ export const useStoreStore = defineStore('store', () => {
     wordDic.value[word] = item;
     wordArr.value = Object.values({...wordDic.value}).sort((a, b) => b.timestamp-a.timestamp);
 
-    inputModal.value = false;
-   
+    modalStore.modalExit();
   }
 
   // word delete
   function wordDelete(targetWord) {
     console.log("delete:", targetWord)
-
+  
     const date = new Date();
     const nowTime = `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}`;
     const timestamp = date.getTime();
@@ -107,7 +99,7 @@ export const useStoreStore = defineStore('store', () => {
     trashCanDic.value = [{...deleteWord}, ...trashCanDic.value];
     localTrashCan.value = [{...deleteWord}, ...localTrashCan.value];
 
-    detailModal.value = false;
+    modalStore.modalExit();
   }
 
   // 화면간 단어 <-> 휴지통 교체
@@ -134,7 +126,6 @@ export const useStoreStore = defineStore('store', () => {
     const word = targetWord;
     const means = wordDic.value[word].means.split(',');
     const time = wordDic.value[word].time.split(' ')[0];
-
     const detailWord = {word: word, means: [...means], time: time};
     return detailWord
 }
@@ -149,9 +140,8 @@ export const useStoreStore = defineStore('store', () => {
   // 휴지통 단어 완전 삭제
   function trashCanWordDelete(targetIndex) {
     trashCanDic.value = [...localTrashCan.value.slice(0, targetIndex), ...localTrashCan.value.slice(targetIndex+1)];
-    console.log(targetIndex);
-    trashCanWordModal.value = false;
     localTrashCan.value = [...trashCanDic.value];
+    modalStore.modalExit();
   }
 
   // 휴지통 단어 복원
@@ -165,5 +155,5 @@ export const useStoreStore = defineStore('store', () => {
 
 
 
-  return {detailWord, wordDic, trashCanDic, inputModal, detailModal, trashCanWordModal, screenTransition, recentWordsDic,wordArr, inputElseModal, trashCanWordRestore, trashCanWordDelete, trashCanWordDetail, getWordMeans, wordRecent, wordAdd, setWordDic, wordDelete, wordDetail, contentChange, wordCheck, recentWordDelete };
+  return {wordDic, trashCanDic, screenTransition, recentWordsDic,wordArr, trashCanWordRestore, trashCanWordDelete, trashCanWordDetail, getWordMeans, wordRecent, wordAdd, setWordDic, wordDelete, wordDetail, contentChange, wordCheck, recentWordDelete };
 })

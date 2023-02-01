@@ -17,9 +17,9 @@ function trashCanWordDetail() {
 <template>
     <div>
        <!-- word -->
-       <div class="card_word" @click="trashCanWordDetail">
+       <span class="card_word" @click="trashCanWordDetail">
            {{ props.word }}
-        </div>
+        </span>
         <!-- 삭제한 날 -->
         <div class="card_content">
             삭제한 날짜 : {{ props.time }} 

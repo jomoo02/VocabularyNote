@@ -6,7 +6,7 @@
         <div class="relative w-1/2">
             <!-- 입력 창 -->
             <div class="relative h-9 px-3 border flex items-center bg-white border-green-500 inputTag">
-                <button v-show="inputWord.length > 0" @click="inputWordClear"><Icon icon="ph:x-bold"></Icon></button>
+                <button v-show="inputWord.length>0" @click="inputWordClear"><Icon icon="ph:x-bold"></Icon></button>
                 <input ref=wordSearch_input placeholder="단어를 입력해주세요" :value="inputWord" @keyup.enter="wordSearch" @focus="recentWordFoucs = true"
                 @input="event => inputWord = event.target.value" class="w-full px-2 focus:outline-0 inputTag"/>
                 <button class="inputTag" @click="wordSearch"><Icon icon="ion:search" width="24" height="24"/></button>
@@ -22,15 +22,15 @@
         </div>
 
         <!-- btn -->
-        <button class="" @click="contentChangeClick">
-            <Icon icon="ph:trash" width="34" height="34" color="#e4e4e7" :class="store.screenTransition === 0 ? 'block':'hidden'" />
-            <Icon icon="ph:notepad" width="34" height="36" color="#e4e4e7" :class="store.screenTransition === 1 ? 'block':'hidden'"/>
+        <button @click="contentChangeClick">
+            <Icon icon="ph:trash" width="34" height="34" color="#e4e4e7" :class="store.screenTransition === 0 ? 'block' : 'hidden'" />
+            <Icon icon="ph:notepad" width="34" height="36" color="#e4e4e7" :class="store.screenTransition === 1 ? 'block' : 'hidden'"/>
         </button>
 
         <Teleport to="body">
-            <Modal v-if="store.inputModal">
+            <Modal v-if="modalStore.inputModal">
                 <template #word>
-                    <div class="modal_word">{{word}}</div>
+                    {{word}}
                 </template>
                 <template #means>
                     <li v-for="mean in means" :key="mean" class="modal_means">
@@ -38,16 +38,16 @@
                     </li>
                 </template>
                 <template #footer>
-                    <div class="modal_footer flex gap-x-4">
-                        <button @click="modalExit" class="modal_btn bg-neutral-400 hover:bg-neutral-500">cancel</button>
+                    <div class="flex gap-x-4 justify-end">
+                        <button @click="modalStore.modalExit" class="modal_btn bg-neutral-400 hover:bg-neutral-500">cancel</button>
                         <button @click="store.wordAdd(word, means)" class="modal_btn bg-emerald-400 hover:bg-emerald-600">add</button>
                     </div>
                 </template>
             </Modal>
 
-            <Modal v-if="store.inputElseModal">
+            <Modal v-if="modalStore.inputElseModal">
                 <template #word>
-                    <div class="modal_word">{{word}}</div>
+                    {{word}}
                 </template>
                 <template #means>
                     <div v-for="mean in means" :key="mean" class="modal_means">
@@ -58,8 +58,8 @@
                     </div>
                 </template>
                 <template #footer>
-                    <div class="flex modal_footer">
-                        <button @click="store.inputElseModal = false" class="modal_btn px-3.5 bg-blue-500 hover:bg-blue-600">ok</button>
+                    <div class="flex">
+                        <button @click="modalStore.inputElseModal = false" class="modal_btn px-3.5 bg-blue-500 hover:bg-blue-600">ok</button>
                     </div>
                 </template>
             </Modal>
@@ -74,6 +74,7 @@ import axios from 'axios';
 import { useStoreStore } from '@/stores/store';
 import Modal from './Modal.vue';
 import { onKeyStroke } from '@vueuse/core'
+import { useModalStore } from '@/stores/modal';
 
 const store = useStoreStore();
 const wordSearch_input = ref();
@@ -82,6 +83,7 @@ const recentWordFoucs = ref(false);
 const word = ref('');
 const means = ref([]);
 const similarWords = ref('');
+const modalStore = useModalStore();
 
 const outFocusInput = (e) => {
     if (e.target.tagName !== 'svg' && e.target.tagName !== 'path' && !e.target.classList.contains('inputTag')) {
@@ -100,20 +102,19 @@ onBeforeUnmount(() => {
 });
 
 onKeyStroke(['Escape'], (e) => {
-    if (store.inputModal || store.detailModal || store.trashCanWordModal || store.inputElseModal) {
-        modalExit();
+    if (modalStore.inputModal || modalStore.detailModal || modalStore.trashCanWordModal || modalStore.inputElseModal) {
+        modalStore.modalExit();
     }
-
 });
 
 onKeyStroke(['Enter'], (e) => {
-    if (store.inputModal) {
+    if (modalStore.inputModal) {
         recentWordFoucs.value = false;
         store.wordAdd(word.value, means.value);
     }
-    if (store.inputElseModal) {
+    else if (modalStore.inputElseModal) {
         recentWordFoucs.value = false;
-        store.inputElseModal = false;
+        modalStore.modalExit();
     }
 });
 
@@ -152,7 +153,7 @@ async function wordSearch(searchWord) {
     if (data.data.items.lan.length === 0) {
         word.value = inputWord.value;
         means.value = ['없는 단어입니다.', '다른 단어를 입력해 주세요.'];
-        store.inputElseModal = true;
+        modalStore.inputElseModal = true;
      
     }
     // 있는 단어
@@ -163,14 +164,14 @@ async function wordSearch(searchWord) {
         if (tagetWord !== wordAndMean[0][1]) {
             word.value = `${inputWord.value}와 유사한 단어들`
             similarWords.value = [...similarWordsCreate(wordAndMean)];
-            store.inputElseModal = true;
+            modalStore.inputElseModal = true;
         }
         // 정상 동작
         else{
             word.value = wordAndMean[0][1];
             means.value = wordAndMean[0][2].split(',');
             store.wordRecent(word.value); 
-            store.inputModal = true;
+            modalStore.inputModal = true;
         }
     }
     inputWord.value = '';
@@ -193,7 +194,7 @@ function wordAndMeanSplit(data) {
 }
 
 function similarWordClick(targetWord) {
-    modalExit();
+    modalStore.modalExit();
     wordSearch(targetWord);
 
 }
@@ -205,15 +206,4 @@ function similarWordsCreate(wordAndMean) {
     }
     return similarWordTemp;
 }
-function modalExit() {
-    store.inputModal = false;
-    store.detailModal = false;
-    store.trashCanWordModal = false;
-    store.inputElseModal = false;
-
-}
 </script>
-
-<style scoped>
-
-</style>

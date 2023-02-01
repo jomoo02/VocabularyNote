@@ -20,6 +20,12 @@ function transmit() {
     emits('detail', word.value);
 }
 
+function checkBtnClick() {
+    check.value = !check.value;
+    store.wordCheck(word.value, check.value);
+}
+
+
 </script>
 
 <template>
@@ -28,12 +34,11 @@ function transmit() {
         <div class="flex gap-x-1">
             <!-- check Icon -->
             <button>
-                <Icon v-if="check" class="flex items-center" @click="check=!check, store.wordCheck(word,check)" icon="carbon:checkbox" width="37" height="37"></Icon>
-                <Icon v-else class="flex items-center" @click="check=!check, store.wordCheck(word,check)" icon="carbon:checkbox-checked" width="37" height="37"></Icon>
+                <Icon v-if="check" class="flex items-center" @click="checkBtnClick" icon="carbon:checkbox" width="37" height="37"></Icon>
+                <Icon v-else class="flex items-center" @click="checkBtnClick" icon="carbon:checkbox-checked" width="37" height="37"></Icon>
             </button>
             <!-- word -->
-            <span class="card_word"
-            :class="check === false ? 'wordcheck_active':''" @click="transmit" >{{ word }}</span>
+            <span class="card_word" :class="check === false ? 'wordcheck_active':''" @click="transmit" >{{ word }}</span>
         </div>
         <!-- mean -->
      
@@ -47,8 +52,9 @@ function transmit() {
 
 <style scoped>
 .wordcheck_active {
-    text-decoration-line: line-through;
+    @apply opacity-60 line-through decoration-2;
+    /* text-decoration-line: line-through;
     text-decoration-thickness: 2px;
-    opacity: 0.6;
+    opacity: 0.6; */
 }
 </style>
