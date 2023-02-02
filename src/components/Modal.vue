@@ -2,6 +2,7 @@
 import { Icon } from '@iconify/vue';
 import { onMounted, onUnmounted } from 'vue';
 import { useModalStore } from '../stores/modal';
+
 const modalStore = useModalStore();
 
 onMounted(() => {

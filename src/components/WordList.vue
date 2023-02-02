@@ -1,10 +1,10 @@
 <script setup>
 import { useStoreStore } from '../stores/store';
+import { ref } from 'vue';
+import { useModalStore } from '../stores/modal';
+import Modal from './Modal.vue';
 import WordCard from './WordCard.vue';
 import WordTrashCan from './WordTrashCan.vue';
-import { ref } from 'vue';
-import Modal from './Modal.vue';
-import { useModalStore } from '../stores/modal';
 
 const store = useStoreStore();
 const modalStore = useModalStore();

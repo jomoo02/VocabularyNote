@@ -1,20 +1,23 @@
 <script setup>
 import { onMounted, ref, onBeforeUnmount } from 'vue';
 import { Icon } from '@iconify/vue';
-import axios from 'axios';
 import { useStoreStore } from '@/stores/store';
-import Modal from './Modal.vue';
-import { onKeyStroke } from '@vueuse/core'
 import { useModalStore } from '@/stores/modal';
+import { onKeyStroke } from '@vueuse/core'
+import axios from 'axios';
+import Modal from './Modal.vue';
 
 const store = useStoreStore();
+const modalStore = useModalStore();
+
 const wordSearch_input = ref();
 const inputWord = ref('');
 const recentWordFoucs = ref(false);
+
 const word = ref('');
 const means = ref([]);
 const similarWords = ref('');
-const modalStore = useModalStore();
+
 
 const outFocusInput = (e) => {
     if (e.target.tagName !== 'svg' && e.target.tagName !== 'path' && !e.target.classList.contains('inputTag')) {
@@ -49,6 +52,20 @@ onKeyStroke(['Enter'], (e) => {
     }
 });
 
+function inputTagFoucs() {
+    wordSearch_input.value.focus();
+}
+
+function inputWordClear() {
+    inputWord.value = '';
+    inputTagFoucs();
+}
+
+function recentWordDeleteClick(index) {
+    store.recentWordDelete(index);
+    inputTagFoucs();
+}
+
 function contentChangeClick() {
     store.contentChange();
     if (store.screenTransition === 1) {
@@ -59,68 +76,10 @@ function contentChangeClick() {
         wordSearch_input.value.disabled = false;
     }
 }
-
-async function wordSearch(searchWord) {
+function dataInitialization() {
     word.value ='';
     means.value = [];
     similarWords.value = [];
-
-    const tagetWord = typeof searchWord === 'string' ? searchWord : inputWord.value 
-
-    // 빈 단어 입력했을때
-    if (tagetWord === '') {
-        window.alert("단어를 입력해 주세요.");
-        inputTagFoucs();
-        return;
-    }
-    // <input> 사용 불가
-    wordSearch_input.value.disabled = true;
-
-    const data = await axios.get(`/search/language/v1/search.json?cate=lan&q=${tagetWord}`); 
- 
-
-    // 없는 단어일 떄 (유사 단어도 없음)
-    if (data.data.items.lan.length === 0) {
-        word.value = inputWord.value;
-        means.value = ['없는 단어입니다.', '다른 단어를 입력해 주세요.'];
-        modalStore.inputElseModal = true;
-     
-    }
-    // 있는 단어
-    else {
-        const wordAndMean = [wordAndMeanSplit(data)][0];
-
-        // 입력한 단어와 다르나 유사한 단어가 있음
-        if (tagetWord !== wordAndMean[0][1]) {
-            word.value = `${inputWord.value}와 유사한 단어들`
-            similarWords.value = [...similarWordsCreate(wordAndMean)];
-            modalStore.inputElseModal = true;
-        }
-        // 정상 동작
-        else{
-            word.value = wordAndMean[0][1];
-            means.value = wordAndMean[0][2].split(',');
-            store.wordRecentUpdate(word.value); 
-            modalStore.inputModal = true;
-        }
-    }
-    inputWord.value = '';
-    wordSearch_input.value.disabled = false;
-    recentWordFoucs.value = false;
-}
-
-function inputWordClear() {
-    inputWord.value = '';
-    inputTagFoucs();
-}
-
-function inputTagFoucs() {
-    wordSearch_input.value.focus();
-}
-
-function recentWordDeleteClick(index) {
-    store.recentWordDelete(index);
-    inputTagFoucs()
 }
 
 function wordAndMeanSplit(data) {
@@ -131,16 +90,65 @@ function wordAndMeanSplit(data) {
     return searchWordMean;
 }
 
+function createSimilarWords(wordAndMean) {
+    const MAX = wordAndMean.length >= 3 ? 3 : wordAndMean.length;
+    return wordAndMean.slice(0, MAX).map(item => item[1]);
+}
+
 function similarWordClick(targetWord) {
     modalStore.modalExit();
     wordSearch(targetWord);
-
 }
-function similarWordsCreate(wordAndMean) {
-    const MAX = wordAndMean.length >= 3 ? 3 : wordAndMean.length;
-    const similarWordTemp = [...wordAndMean.slice(0, MAX)].map(item => item[1]);
 
-    return similarWordTemp;
+function caseEmptyWord() {
+    window.alert("단어를 입력해 주세요.");
+    inputTagFoucs();
+}
+
+function caseNotExistenceWord(targetWord) {
+    word.value = targetWord;
+    means.value = ['없는 단어입니다.', '다른 단어를 입력해 주세요.'];
+    modalStore.inputElseModal = true;
+}
+
+function caseSimilarWord(targetWord, wordAndMean) {
+    word.value = `${targetWord}와(과) 유사한 단어들`
+    similarWords.value = [...createSimilarWords(wordAndMean)];
+    modalStore.inputElseModal = true;
+}
+
+function caseNomalWord(wordAndMean) {
+    word.value = wordAndMean[0][1];
+    means.value = wordAndMean[0][2].split(',');
+    store.wordRecentUpdate(word.value); 
+    modalStore.inputModal = true;
+}
+
+async function wordSearch(searchWord) {
+    const targetWord = searchWord;
+    dataInitialization();
+
+    if (targetWord === '') {
+        caseEmptyWord();
+        return;
+    }
+    // <input> 사용 불가
+    wordSearch_input.value.disabled = true;
+
+    const data = await axios.get(`/search/language/v1/search.json?cate=lan&q=${targetWord}`); 
+ 
+    if (data.data.items.lan.length === 0) {
+        caseNotExistenceWord();
+    }
+    else {
+        const wordAndMean = [...wordAndMeanSplit(data)];
+        targetWord !== wordAndMean[0][1] ? caseSimilarWord(targetWord, wordAndMean) : caseNomalWord(wordAndMean);
+    }
+
+    // input 값 초기화, <input> 사용가능, 최근 검색한 단어 끄기
+    inputWord.value = '';
+    wordSearch_input.value.disabled = false;
+    recentWordFoucs.value = false;
 }
 </script>
 
@@ -153,9 +161,9 @@ function similarWordsCreate(wordAndMean) {
             <!-- 입력 창 -->
             <div class="relative h-9 px-3 border flex items-center bg-white border-green-500 inputTag">
                 <button v-show="inputWord.length>0" @click="inputWordClear"><Icon icon="ph:x-bold"></Icon></button>
-                <input ref=wordSearch_input placeholder="단어를 입력해주세요" :value="inputWord" @keyup.enter="wordSearch" @focus="recentWordFoucs = true"
+                <input ref=wordSearch_input placeholder="단어를 입력해주세요" :value="inputWord" @keyup.enter="wordSearch(inputWord)" @focus="recentWordFoucs = true"
                 @input="event => inputWord = event.target.value" class="w-full px-2 focus:outline-0 inputTag"/>
-                <button class="inputTag" @click="wordSearch"><Icon icon="ion:search" width="24" height="24"/></button>
+                <button class="inputTag" @click="wordSearch(inputWord)"><Icon icon="ion:search" width="24" height="24"/></button>
             </div>
             <!-- 최근 검색한 단어 -->
             <div v-show="recentWordFoucs" class="absolute w-full bg-white border border-green-500 inputTag">
