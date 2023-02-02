@@ -1,72 +1,3 @@
-<template>
-    <div class="fixed top-0 z-20 flex items-center w-full h-16 min-h-16 max-h-16 justify-between py-2 px-2 xs:px-6 sm:px-10 md:px-24 lg:px-48 2xl:px-80 bg-[#2E4559]">
-        <!-- icon -->
-        <div class="text-2xl md:text-4xl font-bold text-white">voca</div>
-        <!-- input -->
-        <div class="relative w-1/2">
-            <!-- 입력 창 -->
-            <div class="relative h-9 px-3 border flex items-center bg-white border-green-500 inputTag">
-                <button v-show="inputWord.length>0" @click="inputWordClear"><Icon icon="ph:x-bold"></Icon></button>
-                <input ref=wordSearch_input placeholder="단어를 입력해주세요" :value="inputWord" @keyup.enter="wordSearch" @focus="recentWordFoucs = true"
-                @input="event => inputWord = event.target.value" class="w-full px-2 focus:outline-0 inputTag"/>
-                <button class="inputTag" @click="wordSearch"><Icon icon="ion:search" width="24" height="24"/></button>
-            </div>
-            <!-- 최근 검색한 단어 -->
-            <div v-show="recentWordFoucs" class="absolute w-full bg-white border border-green-500 inputTag">
-                <div class="text-[12px] text-slate-500 font-semibold px-2 py-0.5 inputTag">최근 검색한 단어</div>
-                <div v-for="(word, index) in store.recentWordsDic" :key="index" class="flex items-center justify-between px-2 inputTag">
-                    <button><span @click="wordSearch(word)" class="text-sm inputTag">{{ word }}</span></button>
-                    <button @click="store.recentWordDelete(index)" class="flex inputTag"><Icon icon="ph:x"></Icon></button>
-                </div>
-            </div>
-        </div>
-
-        <!-- btn -->
-        <button @click="contentChangeClick">
-            <Icon icon="ph:trash" width="34" height="34" color="#e4e4e7" :class="store.screenTransition === 0 ? 'block' : 'hidden'" />
-            <Icon icon="ph:notepad" width="34" height="36" color="#e4e4e7" :class="store.screenTransition === 1 ? 'block' : 'hidden'"/>
-        </button>
-
-        <Teleport to="body">
-            <Modal v-if="modalStore.inputModal">
-                <template #word>
-                    {{word}}
-                </template>
-                <template #means>
-                    <li v-for="mean in means" :key="mean" class="modal_means">
-                        {{ mean }}
-                    </li>
-                </template>
-                <template #footer>
-                    <div class="flex gap-x-4 justify-end">
-                        <button @click="modalStore.modalExit" class="modal_btn bg-neutral-400 hover:bg-neutral-500">cancel</button>
-                        <button @click="store.wordAdd(word, means)" class="modal_btn bg-emerald-400 hover:bg-emerald-600">add</button>
-                    </div>
-                </template>
-            </Modal>
-
-            <Modal v-if="modalStore.inputElseModal">
-                <template #word>
-                    {{word}}
-                </template>
-                <template #means>
-                    <div v-for="mean in means" :key="mean" class="modal_means">
-                        {{ mean }}
-                    </div>
-                    <div v-for="similarWord in similarWords" :key="similarWord" @click="similarWordClick(similarWord)" class="modal_means hover:text-xl cursor-pointer h-[32px] leading-[32px] hover:leading-[32px]">
-                        {{ similarWord }}
-                    </div>
-                </template>
-                <template #footer>
-                    <div class="flex">
-                        <button @click="modalStore.inputElseModal = false" class="modal_btn px-3.5 bg-blue-500 hover:bg-blue-600">ok</button>
-                    </div>
-                </template>
-            </Modal>
-        </Teleport>
-    </div>
-</template>
-
 <script setup>
 import { onMounted, ref, onBeforeUnmount } from 'vue';
 import { Icon } from '@iconify/vue';
@@ -139,13 +70,12 @@ async function wordSearch(searchWord) {
     // 빈 단어 입력했을때
     if (tagetWord === '') {
         window.alert("단어를 입력해 주세요.");
-        wordSearch_input.value.focus();
+        inputTagFoucs();
         return;
     }
     // <input> 사용 불가
     wordSearch_input.value.disabled = true;
 
-    console.log("input:", tagetWord)
     const data = await axios.get(`/search/language/v1/search.json?cate=lan&q=${tagetWord}`); 
  
 
@@ -170,7 +100,7 @@ async function wordSearch(searchWord) {
         else{
             word.value = wordAndMean[0][1];
             means.value = wordAndMean[0][2].split(',');
-            store.wordRecent(word.value); 
+            store.wordRecentUpdate(word.value); 
             modalStore.inputModal = true;
         }
     }
@@ -181,9 +111,17 @@ async function wordSearch(searchWord) {
 
 function inputWordClear() {
     inputWord.value = '';
+    inputTagFoucs();
+}
+
+function inputTagFoucs() {
     wordSearch_input.value.focus();
 }
 
+function recentWordDeleteClick(index) {
+    store.recentWordDelete(index);
+    inputTagFoucs()
+}
 
 function wordAndMeanSplit(data) {
     const searchWordMean = [];
@@ -199,11 +137,78 @@ function similarWordClick(targetWord) {
 
 }
 function similarWordsCreate(wordAndMean) {
-    const similarWordTemp = [];
     const MAX = wordAndMean.length >= 3 ? 3 : wordAndMean.length;
-    for (let i = 0; i < MAX; i++) {
-        similarWordTemp.push(wordAndMean[i][1]);
-    }
+    const similarWordTemp = [...wordAndMean.slice(0, MAX)].map(item => item[1]);
+
     return similarWordTemp;
 }
 </script>
+
+<template>
+    <div class="fixed top-0 z-20 flex items-center w-full h-16 min-h-16 max-h-16 justify-between py-2 px-2 xs:px-6 sm:px-10 md:px-24 lg:px-48 2xl:px-80 bg-[#2E4559]">
+        <!-- icon -->
+        <div class="text-2xl md:text-4xl font-bold text-white">voca</div>
+        <!-- input -->
+        <div class="relative w-1/2">
+            <!-- 입력 창 -->
+            <div class="relative h-9 px-3 border flex items-center bg-white border-green-500 inputTag">
+                <button v-show="inputWord.length>0" @click="inputWordClear"><Icon icon="ph:x-bold"></Icon></button>
+                <input ref=wordSearch_input placeholder="단어를 입력해주세요" :value="inputWord" @keyup.enter="wordSearch" @focus="recentWordFoucs = true"
+                @input="event => inputWord = event.target.value" class="w-full px-2 focus:outline-0 inputTag"/>
+                <button class="inputTag" @click="wordSearch"><Icon icon="ion:search" width="24" height="24"/></button>
+            </div>
+            <!-- 최근 검색한 단어 -->
+            <div v-show="recentWordFoucs" class="absolute w-full bg-white border border-green-500 inputTag">
+                <div class="text-[12px] text-slate-500 font-semibold px-2 py-0.5 inputTag">최근 검색한 단어</div>
+                <div v-for="(word, index) in store.localRecentSearchWords" :key="index" class="flex items-center justify-between px-2 inputTag">
+                    <button><span @click="wordSearch(word)" class="text-sm inputTag">{{ word }}</span></button>
+                    <button @click="recentWordDeleteClick(index)" class="flex inputTag"><Icon icon="ph:x"></Icon></button>
+                </div>
+            </div>
+        </div>
+
+        <!-- btn -->
+        <button @click="contentChangeClick">
+            <Icon icon="ph:trash" width="34" height="34" color="#e4e4e7" :class="store.screenTransition === 0 ? 'block' : 'hidden'" />
+            <Icon icon="ph:notepad" width="34" height="36" color="#e4e4e7" :class="store.screenTransition === 1 ? 'block' : 'hidden'"/>
+        </button>
+
+        <Teleport to="body">
+            <Modal v-if="modalStore.inputModal">
+                <template #word>
+                    {{word}}
+                </template>
+                <template #means>
+                    <li v-for="mean in means" :key="mean" class="modal_means">
+                        {{ mean }}
+                    </li>
+                </template>
+                <template #footer>
+                    <div class="flex gap-x-4 justify-end">
+                        <button @click="modalStore.modalExit" class="modal_btn bg-neutral-400 hover:bg-neutral-500">cancel</button>
+                        <button @click="store.wordAdd(word, means)" class="modal_btn bg-emerald-400 hover:bg-emerald-600">add</button>
+                    </div>
+                </template>
+            </Modal>
+
+            <Modal v-if="modalStore.inputElseModal">
+                <template #word>
+                    {{word}}
+                </template>
+                <template #means>
+                    <div v-for="mean in means" :key="mean" class="modal_means">
+                        {{ mean }}
+                    </div>
+                    <div v-for="similarWord in similarWords" :key="similarWord" @click="similarWordClick(similarWord)" class="modal_means hover:text-xl cursor-pointer h-[32px] leading-[32px] hover:leading-[32px]">
+                        {{ similarWord }}
+                    </div>
+                </template>
+                <template #footer>
+                    <div class="flex">
+                        <button @click="modalStore.inputElseModal = false" class="modal_btn px-3.5 bg-blue-500 hover:bg-blue-600">ok</button>
+                    </div>
+                </template>
+            </Modal>
+        </Teleport>
+    </div>
+</template>

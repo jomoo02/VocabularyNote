@@ -20,6 +20,7 @@ function trashCanWordOpen(targetIndex) {
     detailTrashWord.value = store.trashCanWordDetail(targetIndex);
     modalStore.trashCanWordModal = true;
 }
+
 </script>
 
 <template>
@@ -33,7 +34,7 @@ function trashCanWordOpen(targetIndex) {
         </template>
         <template v-if="store.screenTransition === 1">
             <div>
-                <div v-for="(word, index) in store.trashCanDic" :key="index" class="mb-[32px]">
+                <div v-for="(word, index) in store.localTrashCan" :key="index" class="mb-[32px]">
                     <WordTrashCan :word="word.word" :means="word.means.split(',')" :time="word.time" :afterTime="word.afterTime" :index="index" @trashCanWord="(targetWord) => trashCanWordOpen(targetWord)"></WordTrashCan>
                 </div>
             </div>

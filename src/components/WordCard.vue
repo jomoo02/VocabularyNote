@@ -38,12 +38,12 @@ function checkBtnClick() {
                 <Icon v-else class="flex items-center" @click="checkBtnClick" icon="carbon:checkbox-checked" width="37" height="37"></Icon>
             </button>
             <!-- word -->
-            <span class="card_word" :class="check === false ? 'wordcheck_active':''" @click="transmit" >{{ word }}</span>
+            <span class="card_word" :class="check === false ? 'wordcheck_active':''" @click="transmit">{{ word }}</span>
         </div>
         <!-- mean -->
      
         <div :class="check === false ? 'wordcheck_active':''">
-            <li v-for="mean in means.split(',')" key="mean" class="card_content">
+            <li v-for="mean in means.split(',')" :key="mean" class="card_content">
                 {{ mean }}
             </li>
         </div>
@@ -53,8 +53,5 @@ function checkBtnClick() {
 <style scoped>
 .wordcheck_active {
     @apply opacity-60 line-through decoration-2;
-    /* text-decoration-line: line-through;
-    text-decoration-thickness: 2px;
-    opacity: 0.6; */
 }
 </style>
