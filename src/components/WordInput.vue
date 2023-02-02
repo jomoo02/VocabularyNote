@@ -127,7 +127,7 @@ function caseNomalWord(wordAndMean) {
 async function wordSearch(searchWord) {
     const targetWord = searchWord;
     dataInitialization();
-
+    console.log(targetWord);
     if (targetWord === '') {
         caseEmptyWord();
         return;
@@ -136,9 +136,9 @@ async function wordSearch(searchWord) {
     wordSearch_input.value.disabled = true;
 
     const data = await axios.get(`/search/language/v1/search.json?cate=lan&q=${targetWord}`); 
- 
+
     if (data.data.items.lan.length === 0) {
-        caseNotExistenceWord();
+        caseNotExistenceWord(targetWord);
     }
     else {
         const wordAndMean = [...wordAndMeanSplit(data)];

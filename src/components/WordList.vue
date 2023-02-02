@@ -27,7 +27,7 @@ function trashCanWordOpen(targetIndex) {
     <div class="md:ml-10 lg:ml-32 xl:ml-36 2xl:ml-36">
         <template v-if="store.screenTransition === 0">
             <div class="grid md:grid-cols-2 md:gap-x-36">
-                <div v-for="word in store.wordArr" :key="word.time" class="mb-[32px]">
+                <div v-for="word in store.wordArr" :key="word.word" class="mb-[32px]">
                     <WordCard :word="word.word" :means="word.means" :check="word.check" @detail="(targetIndex) => wordDetailOpen(targetIndex)"></WordCard>
                 </div>
             </div>
@@ -74,7 +74,7 @@ function trashCanWordOpen(targetIndex) {
                     </div>
                     <div class="flex gap-x-4 justify-end">
                         <button @click="store.trashCanWordRestore(detailTrashWord.index)" class="modal_btn bg-emerald-400 hover:bg-emerald-500">restore</button>
-                        <button @click="store.trashCanWordDelete(detailTrashWord.index)" class="modal_btn bg-rose-400 hover:bg-rose-600">delete</button>
+                        <button @click="store.trashCanWordKill(detailTrashWord.index)" class="modal_btn bg-rose-400 hover:bg-rose-600">delete</button>
                     </div>
                 </template>
             </Modal>

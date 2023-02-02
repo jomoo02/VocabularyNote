@@ -4,9 +4,7 @@ import { useStorage } from '@vueuse/core'
 import { useModalStore } from './modal'
 
 export const useStoreStore = defineStore('store', () => {
-
   const modalStore = useModalStore();
-
 
   // 휴지통, 메인화면 전환 0: 메인, 1: 휴지통
   const screenTransition = ref(0);
@@ -36,8 +34,8 @@ export const useStoreStore = defineStore('store', () => {
     return localTrashCan.value.findIndex((trashWord) => trashWord.word === targetWord);
   }
 
-  
-  // start: localStorage에 있는 단어들 set
+
+  // init: localStorage에 있는 단어들 set
   function setWordDic() {
     wordArr.value = Object.values({...localWords.value}).sort((a, b) => b.timestamp-a.timestamp);
 
@@ -86,7 +84,7 @@ export const useStoreStore = defineStore('store', () => {
     const idx = trashCanWordExistenceCheck(targetWord);
 
     if (idx !== -1) {
-      trashCanWordDelete(idx);
+      trashCanWordKill(idx);
     }
 
     const { nowTime, timestamp, afterTime, afterTimestamp} = getTimeAndTimestamp(14);
@@ -128,8 +126,8 @@ export const useStoreStore = defineStore('store', () => {
     return detailTrashCanWord;
   }
 
-  // trashCan word 완전 삭제
-  function trashCanWordDelete(targetIndex) {
+  // trashCan word kill
+  function trashCanWordKill(targetIndex) {
     localTrashCan.value = [...localTrashCan.value.slice(0, targetIndex), ...localTrashCan.value.slice(targetIndex+1)];
     modalStore.modalExit();
   }
@@ -139,7 +137,7 @@ export const useStoreStore = defineStore('store', () => {
     const word = localTrashCan.value[targetIndex].word;
     const means = localTrashCan.value[targetIndex].means;
     wordAdd(word, means);
-    trashCanWordDelete(targetIndex)
+    trashCanWordKill(targetIndex);
   }
 
   return { localWords, localTrashCan, localRecentSearchWords, wordArr, screenTransition, 
@@ -151,7 +149,7 @@ export const useStoreStore = defineStore('store', () => {
     wordCheck, 
     contentChange,
     trashCanWordRestore, 
-    trashCanWordDelete, 
+    trashCanWordKill, 
     trashCanWordDetail, 
     recentWordDelete, 
   };

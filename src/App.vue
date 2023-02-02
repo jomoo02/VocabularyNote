@@ -5,10 +5,7 @@ import { onMounted } from 'vue';
 import { useStoreStore } from '@/stores/store';
 const store = useStoreStore();
 
-onMounted(() => {
-  store.setWordDic();
-  
-});
+store.setWordDic();
 
 </script>
 
@@ -17,7 +14,7 @@ onMounted(() => {
       <WordInput></WordInput>
   </header>
 
-  <main class="pt-[32px] px-10 md:px-24 lg:px-32 2xl:px-80  min-h-screen">
+  <main class="pt-[32px] px-10 md:px-24 lg:px-32 2xl:px-80 min-h-screen">
     <WordList></WordList>
   </main>
 </template>
