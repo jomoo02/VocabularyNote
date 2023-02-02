@@ -157,7 +157,7 @@ async function wordSearch(searchWord) {
         <!-- icon -->
         <div class="text-2xl md:text-4xl font-bold text-white">voca</div>
         <!-- input -->
-        <div class="relative w-1/2">
+        <div class="relative w-3/5 md:w-1/2">
             <!-- 입력 창 -->
             <div class="relative h-9 px-3 border flex items-center bg-white border-green-500 inputTag">
                 <button v-show="inputWord.length>0" @click="inputWordClear"><Icon icon="ph:x-bold"></Icon></button>

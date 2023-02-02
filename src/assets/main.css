@@ -4,15 +4,6 @@
 @tailwind utilities;
 
 
-#app {
-  --bg-color: #fff;
-  --bg-transparent: rgba(255, 255, 255, 0);
-  --border-color: #BFBFBF;
-  --ms-line-interval: calc(2.3rem + 0.5px);
-  --md-line-interval: calc(2.3rem + 0.275rem);
-  --ml-line-interval: calc(2.3rem + 0.28rem);
-  --px-to-rem: 0.063rem;
-}
 @layer components {
   .card_word {
     @apply cursor-pointer font-bold h-[64px] text-3xl hover:text-4xl leading-[64px] hover:leading-[64px] text-ellipsis overflow-hidden whitespace-nowrap;
@@ -22,7 +13,7 @@
   }
 
   .modal_word {
-    @apply text-4xl my-5 pb-4 font-bold;
+    @apply text-4xl my-2 xs:my-5 pb-4 font-bold;
   }
   .modal_means {
     @apply font-semibold text-lg;
@@ -34,7 +25,7 @@
     @apply absolute bottom-0 right-0 p-6;
   }
   .modal_timetext {
-    @apply text-sm my-4 text-neutral-400;
+    @apply flex flex-col items-end text-sm my-4 text-neutral-400;
   }
 }
 
