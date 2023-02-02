@@ -32,6 +32,11 @@ export const useStoreStore = defineStore('store', () => {
     return { nowTime, timestamp };
   }
 
+  function trashCanWordExistenceCheck(targetWord) {
+    return localTrashCan.value.findIndex((trashWord) => trashWord.word === targetWord);
+  }
+
+  
   // start: localStorage에 있는 단어들 set
   function setWordDic() {
     wordArr.value = Object.values({...localWords.value}).sort((a, b) => b.timestamp-a.timestamp);
@@ -78,7 +83,12 @@ export const useStoreStore = defineStore('store', () => {
   // word delete
   function wordDelete(targetWord) {
     console.log("delete:", targetWord)
-  
+    const idx = trashCanWordExistenceCheck(targetWord);
+
+    if (idx !== -1) {
+      trashCanWordDelete(idx);
+    }
+
     const { nowTime, timestamp, afterTime, afterTimestamp} = getTimeAndTimestamp(14);
     const deleteWord = { word: targetWord, means: localWords.value[targetWord].means, time: nowTime, timestamp: timestamp, afterTimestamp: afterTimestamp, afterTime: afterTime };
     delete localWords.value[targetWord];
