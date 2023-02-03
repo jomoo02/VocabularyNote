@@ -40,44 +40,48 @@ function trashCanWordOpen(targetIndex) {
             </div>
         </template>
         <Teleport to="body">
-            <Modal v-if="modalStore.detailModal">
-                <template #word>
-                    {{ detailWord.word }}
-                </template>
-                <template #means>
-                    <li v-for="mean in detailWord.means" :key="mean" class="modal_means">
-                        {{ mean }}
-                    </li> 
-                </template>
-                <template #footer>
-                    <div class="flex justify-end modal_timetext">{{ detailWord.time }}</div>
-                    <div class="flex gap-x-4">
-                        <button @click="modalStore.detailModal = false" class="modal_btn bg-neutral-400 hover:bg-neutral-500">cancel</button>
-                        <button @click="store.wordDelete(detailWord.word)" class="modal_btn bg-rose-400 hover:bg-rose-600">delete</button>
-                    </div>
-                </template>
-            </Modal>
-            
-            <Modal v-if="modalStore.trashCanWordModal">
-                <template #word>   
-                    {{ detailTrashWord.word }}
-                </template>
-                <template #means>
-                    <li v-for="mean in detailTrashWord.means" :key="mean" class="modal_means">
-                        {{ mean }}
-                    </li> 
-                </template>
-                <template #footer>
-                    <div class="modal_timetext">
-                        <div>삭제한 날짜: {{ detailTrashWord.time }}</div>
-                        <div>삭제될 날짜: {{ detailTrashWord.afterTime }}</div>
-                    </div>
-                    <div class="flex gap-x-4 justify-end">
-                        <button @click="store.trashCanWordRestore(detailTrashWord.index)" class="modal_btn bg-emerald-400 hover:bg-emerald-500">restore</button>
-                        <button @click="store.trashCanWordKill(detailTrashWord.index)" class="modal_btn bg-rose-400 hover:bg-rose-600">delete</button>
-                    </div>
-                </template>
-            </Modal>
+            <Transition name="slide-fade">
+                <Modal v-if="modalStore.detailModal">
+                    <template #word>
+                        {{ detailWord.word }}
+                    </template>
+                    <template #means>
+                        <li v-for="mean in detailWord.means" :key="mean" class="modal_means">
+                            {{ mean }}
+                        </li> 
+                    </template>
+                    <template #footer>
+                        <div class="flex justify-end modal_timetext">{{ detailWord.time }}</div>
+                        <div class="flex gap-x-4">
+                            <button @click="modalStore.detailModal = false" class="modal_btn bg-neutral-400 hover:bg-neutral-500">cancel</button>
+                            <button @click="store.wordDelete(detailWord.word)" class="modal_btn bg-rose-400 hover:bg-rose-600">delete</button>
+                        </div>
+                    </template>
+                </Modal>
+            </Transition>
+            <Transition name="slide-fade">
+                <Modal v-if="modalStore.trashCanWordModal">
+                    <template #word>   
+                        {{ detailTrashWord.word }}
+                    </template>
+                    <template #means>
+                        <li v-for="mean in detailTrashWord.means" :key="mean" class="modal_means">
+                            {{ mean }}
+                        </li> 
+                    </template>
+                    <template #footer>
+                        <div class="modal_timetext">
+                            <div>삭제한 날짜: {{ detailTrashWord.time }}</div>
+                            <div>삭제될 날짜: {{ detailTrashWord.afterTime }}</div>
+                        </div>
+                        <div class="flex gap-x-4 justify-end">
+                            <button @click="store.trashCanWordRestore(detailTrashWord.index)" class="modal_btn bg-emerald-400 hover:bg-emerald-500">restore</button>
+                            <button @click="store.trashCanWordKill(detailTrashWord.index)" class="modal_btn bg-rose-400 hover:bg-rose-600">delete</button>
+                        </div>
+                    </template>
+                </Modal>
+            </Transition>
         </Teleport>
     </div>
 </template>
+

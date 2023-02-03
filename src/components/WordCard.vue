@@ -1,7 +1,7 @@
 <script setup>
-import { Icon } from '@iconify/vue'
-import { useStoreStore } from '../stores/store'
-import { ref } from 'vue'
+import { Icon } from '@iconify/vue';
+import { useStoreStore } from '../stores/store';
+import { ref } from 'vue';
 
 const props = defineProps({
     word: String,
@@ -30,7 +30,6 @@ function checkBtnClick() {
 
 <template>
     <div class="flex flex-col">
-        <!-- word -->
         <div class="flex gap-x-1">
             <!-- check Icon -->
             <button>
@@ -41,7 +40,6 @@ function checkBtnClick() {
             <span class="card_word" :class="check === false ? 'wordcheck_active':''" @click="transmit">{{ word }}</span>
         </div>
         <!-- mean -->
-     
         <div :class="check === false ? 'wordcheck_active':''">
             <li v-for="mean in means.split(',')" :key="mean" class="card_content">
                 {{ mean }}

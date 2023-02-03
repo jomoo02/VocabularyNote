@@ -182,41 +182,45 @@ async function wordSearch(searchWord) {
         </button>
 
         <Teleport to="body">
-            <Modal v-if="modalStore.inputModal">
-                <template #word>
-                    {{word}}
-                </template>
-                <template #means>
-                    <li v-for="mean in means" :key="mean" class="modal_means">
-                        {{ mean }}
-                    </li>
-                </template>
-                <template #footer>
-                    <div class="flex gap-x-4 justify-end">
-                        <button @click="modalStore.modalExit" class="modal_btn bg-neutral-400 hover:bg-neutral-500">cancel</button>
-                        <button @click="store.wordAdd(word, means)" class="modal_btn bg-emerald-400 hover:bg-emerald-600">add</button>
-                    </div>
-                </template>
-            </Modal>
-
-            <Modal v-if="modalStore.inputElseModal">
-                <template #word>
-                    {{word}}
-                </template>
-                <template #means>
-                    <div v-for="mean in means" :key="mean" class="modal_means">
-                        {{ mean }}
-                    </div>
-                    <div v-for="similarWord in similarWords" :key="similarWord" @click="similarWordClick(similarWord)" class="modal_means hover:text-xl cursor-pointer h-[32px] leading-[32px] hover:leading-[32px]">
-                        {{ similarWord }}
-                    </div>
-                </template>
-                <template #footer>
-                    <div class="flex">
-                        <button @click="modalStore.inputElseModal = false" class="modal_btn px-3.5 bg-blue-500 hover:bg-blue-600">ok</button>
-                    </div>
-                </template>
-            </Modal>
+            <Transition name="slide-fade">
+                <Modal v-if="modalStore.inputModal">
+                    <template #word>
+                        {{word}}
+                    </template>
+                    <template #means>
+                        <li v-for="mean in means" :key="mean" class="modal_means">
+                            {{ mean }}
+                        </li>
+                    </template>
+                    <template #footer>
+                        <div class="flex gap-x-4 justify-end">
+                            <button @click="modalStore.modalExit" class="modal_btn bg-neutral-400 hover:bg-neutral-500">cancel</button>
+                            <button @click="store.wordAdd(word, means)" class="modal_btn bg-emerald-400 hover:bg-emerald-600">add</button>
+                        </div>
+                    </template>
+                </Modal>
+            </Transition>
+            <Transition name="slide-fade">
+                <Modal v-if="modalStore.inputElseModal">
+                    <template #word>
+                        {{word}}
+                    </template>
+                    <template #means>
+                        <div v-for="mean in means" :key="mean" class="modal_means">
+                            {{ mean }}
+                        </div>
+                        <div v-for="similarWord in similarWords" :key="similarWord" @click="similarWordClick(similarWord)" class="modal_means hover:text-xl cursor-pointer h-[32px] leading-[32px] hover:leading-[32px]">
+                            {{ similarWord }}
+                        </div>
+                    </template>
+                    <template #footer>
+                        <div class="flex">
+                            <button @click="modalStore.inputElseModal = false" class="modal_btn px-3.5 bg-blue-500 hover:bg-blue-600">ok</button>
+                        </div>
+                    </template>
+                </Modal>
+            </Transition>
         </Teleport>
     </div>
 </template>
+

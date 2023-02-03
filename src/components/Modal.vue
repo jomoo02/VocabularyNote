@@ -21,7 +21,7 @@ onUnmounted(() => {
             <div class="relative py-6 px-6 w-[480px] h-[400px] bg-white rounded-md border border-slate-400 overflow-auto">
                 <!-- 나가기 -->
                 <div class="flex justify-end"><Icon icon="ion:close" @click="modalStore.modalExit" width="30" heihgt="30"></Icon></div>
-               
+            
                 <div class="modal_word">
                     <slot name="word" />
                 </div>

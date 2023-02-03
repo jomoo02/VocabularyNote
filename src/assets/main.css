@@ -27,5 +27,14 @@
   .modal_timetext {
     @apply flex flex-col items-end text-sm my-4 text-neutral-400;
   }
+
+
+  .slide-fade-enter-active {
+    transition: all 0.3s ease;
+  }
+  .slide-fade-enter-from {
+    transform: translatex(-20px);
+    opacity: 0;
+  }
 }
 
