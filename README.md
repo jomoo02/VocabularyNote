@@ -3,15 +3,12 @@
 
 ## Introduction
 영어 단어의 뜻을 검색하고 노트에 적듯이 저장하고 외웁니다. 다 외우면 줄을 긋거나 지울 수 있습니다.  
-
+지워진 단어는 휴지통으로 이동해 2주 뒤 완전히 삭제됩니다. 그전에 복원하거나 미리 지울 수 있습니다.  
+[프로젝트에 관한 글](https://jomoo.dev/projects/vocabularynote/intro)
 <br />
 
 
 <img src="https://user-images.githubusercontent.com/86420174/216611415-9957d440-0c89-4909-a353-7a3b27df2b90.gif">
-
-<!-- 
-<img src="https://user-images.githubusercontent.com/86420174/216611998-1d6699b8-bd5d-48a1-ada4-85e1c8a56ab4.png" width="30%"> -->
-
 
 
 ## Installation
