@@ -4,6 +4,7 @@
 @tailwind utilities;
 
 
+
 @layer components {
   .card_word {
     @apply cursor-pointer font-bold h-[64px] text-3xl hover:text-4xl leading-[64px] hover:leading-[64px] text-ellipsis overflow-hidden whitespace-nowrap;
@@ -28,13 +29,4 @@
     @apply flex flex-col items-end text-sm my-4 text-neutral-400;
   }
 
-
-  .slide-fade-enter-active {
-    transition: all 0.3s ease;
-  }
-  .slide-fade-enter-from {
-    transform: translatex(-20px);
-    opacity: 0;
-  }
 }
-

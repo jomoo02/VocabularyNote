@@ -85,3 +85,14 @@ function trashCanWordOpen(targetIndex) {
     </div>
 </template>
 
+
+<style scoped>
+.slide-fade-enter-active {
+    transition: all 0.3s ease;
+}
+.slide-fade-enter-from,
+.slide-fade-leave-to {
+    transform: translatex(-20px);
+    opacity: 0;
+}
+</style>

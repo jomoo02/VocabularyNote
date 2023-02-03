@@ -123,6 +123,15 @@ function caseNomalWord(wordAndMean) {
     store.wordRecentUpdate(word.value); 
     modalStore.inputModal = true;
 }
+function checkWordSame(word1, word2) {
+    const w1 = word1.toLowerCase();
+    const w2 = word2.toLowerCase();
+    console.log(w1, w2)
+    if (w1 === w2) {
+        return true;
+    }
+    return false;
+}
 
 async function wordSearch(searchWord) {
     const targetWord = searchWord;
@@ -142,7 +151,8 @@ async function wordSearch(searchWord) {
     }
     else {
         const wordAndMean = [...wordAndMeanSplit(data)];
-        targetWord !== wordAndMean[0][1] ? caseSimilarWord(targetWord, wordAndMean) : caseNomalWord(wordAndMean);
+       
+        checkWordSame(targetWord, wordAndMean[0][1]) ? caseNomalWord(wordAndMean) : caseSimilarWord(targetWord, wordAndMean);
     }
 
     // input 값 초기화, <input> 사용가능, 최근 검색한 단어 끄기
@@ -159,14 +169,14 @@ async function wordSearch(searchWord) {
         <!-- input -->
         <div class="relative w-3/5 md:w-1/2">
             <!-- 입력 창 -->
-            <div class="relative h-9 px-3 border flex items-center bg-white border-green-500 inputTag">
+            <div class="relative h-9 px-3 border flex items-center bg-white border-black inputTag">
                 <button v-show="inputWord.length>0" @click="inputWordClear"><Icon icon="ph:x-bold"></Icon></button>
                 <input ref=wordSearch_input placeholder="단어를 입력해주세요" :value="inputWord" @keyup.enter="wordSearch(inputWord)" @focus="recentWordFoucs = true"
                 @input="event => inputWord = event.target.value" class="w-full px-2 focus:outline-0 inputTag"/>
                 <button class="inputTag" @click="wordSearch(inputWord)"><Icon icon="ion:search" width="24" height="24"/></button>
             </div>
             <!-- 최근 검색한 단어 -->
-            <div v-show="recentWordFoucs" class="absolute w-full bg-white border border-green-500 inputTag">
+            <div v-show="recentWordFoucs" class="absolute w-full bg-white border-[1.5px] border-black inputTag">
                 <div class="text-[12px] text-slate-500 font-semibold px-2 py-0.5 inputTag">최근 검색한 단어</div>
                 <div v-for="(word, index) in store.localRecentSearchWords" :key="index" class="flex items-center justify-between px-2 inputTag">
                     <button><span @click="wordSearch(word)" class="text-sm inputTag">{{ word }}</span></button>
@@ -224,3 +234,14 @@ async function wordSearch(searchWord) {
     </div>
 </template>
 
+
+<style scoped>
+.slide-fade-enter-active {
+    transition: all 0.3s ease;
+}
+.slide-fade-enter-from,
+.slide-fade-leave-to {
+    transform: translatex(-20px);
+    opacity: 0;
+}
+</style>
