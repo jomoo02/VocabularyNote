@@ -6,11 +6,13 @@
 
 <br />
 
-<div>
+<div style="display:flex; gap:20px;">
 
-<img src="https://user-images.githubusercontent.com/86420174/216611415-9957d440-0c89-4909-a353-7a3b27df2b90.gif" >
+<img align=top src="https://user-images.githubusercontent.com/86420174/216611415-9957d440-0c89-4909-a353-7a3b27df2b90.gif" width="70%" />
 
-<img src="https://user-images.githubusercontent.com/86420174/216611998-1d6699b8-bd5d-48a1-ada4-85e1c8a56ab4.png" >
+<img align="top" src="https://user-images.githubusercontent.com/86420174/216611998-1d6699b8-bd5d-48a1-ada4-85e1c8a56ab4.png" width="30%">
+
+
 
 </div>
 
