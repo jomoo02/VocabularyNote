@@ -27,8 +27,8 @@ function trashCanWordOpen(targetIndex) {
     <div class="md:ml-10 lg:ml-32 xl:ml-36 2xl:ml-36">
         <template v-if="store.screenTransition === 0">
             <div class="grid md:grid-cols-2 md:gap-x-36">
-                <div v-for="word in store.wordArr" :key="word.word" class="mb-[32px]">
-                    <WordCard :word="word.word" :means="word.means" :check="word.check" @detail="(targetIndex) => wordDetailOpen(targetIndex)"></WordCard>
+                <div v-for="(word, index) in store.wordArr" :key="word" class="mb-[32px]">
+                    <WordCard :word="word.word" :means="word.means" :check="word.check" :index="index" @detail="(targetIndex) => wordDetailOpen(targetIndex)"></WordCard>
                 </div>
             </div>
         </template>

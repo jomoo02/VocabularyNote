@@ -6,7 +6,8 @@ import { ref } from 'vue';
 const props = defineProps({
     word: String,
     means: String,
-    check: Boolean
+    check: Boolean,
+    index: Number,
 })
 const emits = defineEmits(['detail']);
 const store = useStoreStore();
@@ -14,6 +15,7 @@ const store = useStoreStore();
 const word = ref(props.word);
 const means = ref(props.means);
 const check = ref(props.check);
+const index = ref(props.index);
 
 
 function transmit() {
@@ -22,7 +24,7 @@ function transmit() {
 
 function checkBtnClick() {
     check.value = !check.value;
-    store.wordCheck(word.value, check.value);
+    store.wordCheck(word.value, check.value, index.value);
 }
 
 
