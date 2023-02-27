@@ -16,11 +16,11 @@ function wordDetailOpen(targetWord) {
     modalStore.detailModal = true;
 }
 
-function trashCanWordOpen(targetIndex) {
-    detailTrashWord.value = store.trashCanWordDetail(targetIndex);
+function trashCanWordOpen(targetWord) {
+    console.log(targetWord)
+    detailTrashWord.value = store.trashCanWordDetail(targetWord);
     modalStore.trashCanWordModal = true;
 }
-
 </script>
 
 <template>
@@ -28,14 +28,14 @@ function trashCanWordOpen(targetIndex) {
         <template v-if="store.screenTransition === 0">
             <div class="grid md:grid-cols-2 md:gap-x-36">
                 <div v-for="(word, index) in store.wordArr" :key="word" class="mb-[32px]">
-                    <WordCard :word="word.word" :means="word.means" :check="word.check" :index="index" @detail="(targetIndex) => wordDetailOpen(targetIndex)"></WordCard>
+                    <WordCard :word="word.word" :means="word.means" :check="word.check" :index="index" @detail="(targetWord) => wordDetailOpen(targetWord)"></WordCard>
                 </div>
             </div>
         </template>
         <template v-if="store.screenTransition === 1">
             <div>
-                <div v-for="(word, index) in store.localTrashCan" :key="index" class="mb-[32px]">
-                    <WordTrashCan :word="word.word" :means="word.means.split(',')" :time="word.time" :afterTime="word.afterTime" :index="index" @trashCanWord="(targetWord) => trashCanWordOpen(targetWord)"></WordTrashCan>
+                <div v-for="word in store.localTrashCan.values()" :key="word" class="mb-[32px]">
+                    <WordTrashCan :word="word.word" :means="word.means.split(',')" :time="word.time" :afterTime="word.afterTime" @trashCanWord="(targetWord) => trashCanWordOpen(targetWord)"></WordTrashCan>
                 </div>
             </div>
         </template>
@@ -75,8 +75,8 @@ function trashCanWordOpen(targetIndex) {
                             <div>삭제될 날짜: {{ detailTrashWord.afterTime }}</div>
                         </div>
                         <div class="flex gap-x-4 justify-end">
-                            <button @click="store.trashCanWordRestore(detailTrashWord.index)" class="modal_btn bg-emerald-400 hover:bg-emerald-500">restore</button>
-                            <button @click="store.trashCanWordKill(detailTrashWord.index)" class="modal_btn bg-rose-400 hover:bg-rose-600">delete</button>
+                            <button @click="store.trashCanWordRestore(detailTrashWord.word)" class="modal_btn bg-emerald-400 hover:bg-emerald-500">restore</button>
+                            <button @click="store.trashCanWordKill(detailTrashWord.word)" class="modal_btn bg-rose-400 hover:bg-rose-600">delete</button>
                         </div>
                     </template>
                 </Modal>

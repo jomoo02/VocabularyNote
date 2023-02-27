@@ -1,7 +1,6 @@
 <script setup>
 import WordInput from './components/WordInput.vue'
 import WordList from './components/WordList.vue'
-import { onMounted } from 'vue'
 import { useStoreStore } from '@/stores/store'
 const store = useStoreStore();
 
@@ -20,7 +19,7 @@ store.setWordDic();
 </template>
 
 <style scoped>
-*{
+* {
  --bg-color: #F2E399;
  --bg-transparent: rgba(255, 255, 255, 0);
  --border-color: #BFBFBF; 

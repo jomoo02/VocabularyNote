@@ -4,7 +4,7 @@ import { Icon } from '@iconify/vue';
 import { useStoreStore } from '@/stores/store';
 import { useModalStore } from '@/stores/modal';
 import { onKeyStroke } from '@vueuse/core'
-import axios from 'axios';
+import { fetchWordList } from '../../api';
 import Modal from './Modal.vue';
 
 const store = useStoreStore();
@@ -112,7 +112,7 @@ function caseNotExistenceWord(targetWord) {
 }
 
 function caseSimilarWord(targetWord, wordAndMean) {
-    word.value = `${targetWord}와(과) 유사한 단어들`
+    word.value = `${targetWord}와(과) 유사한 단어들`;
     similarWords.value = [...createSimilarWords(wordAndMean)];
     modalStore.inputElseModal = true;
 }
@@ -144,7 +144,7 @@ async function wordSearch(searchWord) {
     // <input> 사용 불가
     wordSearch_input.value.disabled = true;
 
-    const data = await axios.get(`/search/language/v1/search.json?cate=lan&q=${targetWord}`); 
+    const data = await fetchWordList(targetWord);
 
     if (data.data.items.lan.length === 0) {
         caseNotExistenceWord(targetWord);

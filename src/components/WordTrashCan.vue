@@ -4,12 +4,11 @@ const props = defineProps({
     means: Array,
     time: String,
     afterTime: String,
-    index: Number
 })
 const emits = defineEmits(['trashCanWord']);
 
 function trashCanWordDetail() {
-    emits('trashCanWord', props.index);
+    emits('trashCanWord', props.word);
 }
 
 </script>
