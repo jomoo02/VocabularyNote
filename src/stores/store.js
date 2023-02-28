@@ -1,7 +1,7 @@
-import { ref } from 'vue'
-import { defineStore } from 'pinia'
-import { useStorage } from '@vueuse/core'
-import { useModalStore } from './modal'
+import { ref } from 'vue';
+import { defineStore } from 'pinia';
+import { useStorage } from '@vueuse/core';
+import { useModalStore } from './modal';
 
 export const useStoreStore = defineStore('store', () => {
   const modalStore = useModalStore();

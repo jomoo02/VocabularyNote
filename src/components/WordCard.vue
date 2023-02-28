@@ -27,7 +27,6 @@ function checkBtnClick() {
     store.wordCheck(word.value, check.value, index.value);
 }
 
-
 </script>
 
 <template>
