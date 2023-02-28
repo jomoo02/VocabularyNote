@@ -1,11 +1,11 @@
 <script setup>
 import TheModal from './TheModal.vue';
-import { useStoreStore } from '../stores/store';
+import { useMainStore } from '../stores/Main';
 import { ref } from 'vue';
 import { useDetailWordStore } from '../stores/DetailWord';
 
 
-const store = useStoreStore();
+const mainStore = useMainStore();
 const detailWordStore = useDetailWordStore();
 const detailTrashWord = ref(null);
 
@@ -29,8 +29,8 @@ detailTrashWord.value = {...detailWordStore.trashCanDetailWordModal()};
                 <div>삭제될 날짜: {{ detailTrashWord.afterTime }}</div>
             </div>
             <div class="flex gap-x-4 justify-end">
-                <button @click="store.trashCanWordRestore(detailTrashWord.word)" class="modal_btn bg-emerald-400 hover:bg-emerald-500">restore</button>
-                <button @click="store.trashCanWordKill(detailTrashWord.word)" class="modal_btn bg-rose-400 hover:bg-rose-600">delete</button>
+                <button @click="mainStore.trashCanWordRestore(detailTrashWord.word)" class="modal_btn bg-emerald-400 hover:bg-emerald-500">restore</button>
+                <button @click="mainStore.trashCanWordKill(detailTrashWord.word)" class="modal_btn bg-rose-400 hover:bg-rose-600">delete</button>
             </div>
         </template>
     </TheModal>

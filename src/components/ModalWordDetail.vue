@@ -1,12 +1,12 @@
 <script setup>
-import { useStoreStore } from '../stores/store';
+import { useMainStore } from '../stores/Main';
 import { useModalStore } from '../stores/modal';
 import { useDetailWordStore } from '../stores/DetailWord';
 import { ref } from 'vue';
 import Modal from './TheModal.vue';
 
 
-const store = useStoreStore();
+const mainStore = useMainStore();
 const modalStore = useModalStore();
 const detailWordStore = useDetailWordStore();
 const detailWord = ref(null);
@@ -28,7 +28,7 @@ detailWord.value = {...detailWordStore.detailWordModal()};
             <div class="flex justify-end modal_timetext">{{ detailWord.time }}</div>
             <div class="flex gap-x-4">
                 <button @click="modalStore.detailModal = false" class="modal_btn bg-neutral-400 hover:bg-neutral-500">cancel</button>
-                <button @click="store.wordDelete(detailWord.word)" class="modal_btn bg-rose-400 hover:bg-rose-600">delete</button>
+                <button @click="mainStore.wordDelete(detailWord.word)" class="modal_btn bg-rose-400 hover:bg-rose-600">delete</button>
             </div>
         </template>
     </Modal>

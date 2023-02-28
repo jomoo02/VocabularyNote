@@ -1,11 +1,11 @@
 <script setup>
 import { onMounted, ref, onBeforeUnmount } from 'vue';
 import { Icon } from '@iconify/vue';
-import { useStoreStore } from '@/stores/store';
-import { useModalStore } from '@/stores/modal';
+import { useMainStore } from '@/stores/Main';
+
 import { useInputWordStore } from '../stores/InputWord';
 
-const store = useStoreStore();
+const mainStore = useMainStore();
 const wordStore = useInputWordStore();
 
 const wordSearch_input = ref(null);
@@ -39,7 +39,7 @@ function inputTagFoucs() {
 }
 
 function childComponent() {
-    if (store.screenTransition === 1) {
+    if (mainStore.screenTransition === 1) {
         recentWordFoucs.value = false;
         toggleInputAndBtn();
     }
@@ -54,7 +54,7 @@ function inputWordClear() {
 }
 
 function recentWordDeleteClick(index) {
-    store.recentWordDelete(index);
+    mainStore.recentWordDelete(index);
     inputTagFoucs();
 }
 
@@ -91,7 +91,7 @@ defineExpose({
         <!-- 최근 검색한 단어 -->
         <div v-show="recentWordFoucs" class="absolute w-full bg-white border-[1.5px] border-black inputTag">
             <div class="text-[12px] text-slate-500 font-semibold px-2 py-0.5 inputTag">최근 검색한 단어</div>
-            <div v-for="(word, index) in store.localRecentSearchWords" :key="index" class="flex items-center justify-between px-2 inputTag">
+            <div v-for="(word, index) in mainStore.localRecentSearchWords" :key="index" class="flex items-center justify-between px-2 inputTag">
                 <button><span @click="wordSearch(word)" class="text-sm inputTag">{{ word }}</span></button>
                 <button @click="recentWordDeleteClick(index)" class="flex inputTag"><Icon icon="ph:x"></Icon></button>
             </div>

@@ -1,11 +1,11 @@
 <script setup>
 import TheModal from './TheModal.vue';
-import { useStoreStore } from '../stores/store';
+import { useMainStore } from '../stores/Main';
 import { useInputWordStore } from '../stores/InputWord';
 import { useModalStore } from '../stores/modal';
 import { ref } from 'vue';
 
-const store = useStoreStore();
+const mainStore = useMainStore();
 const modalStore = useModalStore();
 const wordStore = useInputWordStore();
 const word = ref('');
@@ -31,7 +31,7 @@ means.value = modalMeans;
         <template #footer>
             <div class="flex gap-x-4 justify-end">
                 <button @click="modalStore.modalExit" class="modal_btn bg-neutral-400 hover:bg-neutral-500">cancel</button>
-                <button @click="store.wordAdd(word, means)" class="modal_btn bg-emerald-400 hover:bg-emerald-600">add</button>
+                <button @click="mainStore.wordAdd(word, means)" class="modal_btn bg-emerald-400 hover:bg-emerald-600">add</button>
             </div>
         </template>
     </TheModal>

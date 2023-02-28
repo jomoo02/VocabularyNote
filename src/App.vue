@@ -1,16 +1,16 @@
 <script setup>
 import WordList from './components/WordList.vue'
 import TheHeader from './components/TheHeader.vue';
-import { useStoreStore } from '@/stores/store'
+import { useMainStore } from '@/stores/Main'
 import { useModalStore } from './stores/modal';
 import { onKeyStroke } from '@vueuse/core'
 import { useInputWordStore } from './stores/InputWord';
 
-const store = useStoreStore();
+const mainStore = useMainStore();
 const modalStore = useModalStore();
 const wordStore = useInputWordStore();
 
-store.setWordDic();
+mainStore.setWordDic();
 
 onKeyStroke(['Escape'], (e) => {
     if (modalStore.inputModal || modalStore.detailModal || modalStore.trashCanWordModal || modalStore.inputNotExistModal || modalStore.inputSimilarModal) {
@@ -21,7 +21,7 @@ onKeyStroke(['Escape'], (e) => {
 onKeyStroke(['Enter'], (e) => {
     if (modalStore.inputModal) {
       const [word, means] = wordStore.caseNomalCreate();
-      store.wordAdd(word, means);
+      mainStore.wordAdd(word, means);
     }
     else if (modalStore.inputNotExistModal) {
       modalStore.modalExit();

@@ -1,11 +1,11 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue'; 
-import { useStoreStore } from './store';
+import { useMainStore } from './Main';
 import { useModalStore } from './modal';
 import { fetchWordList } from '../../api';
 
 export const useInputWordStore = defineStore('inputWord', () => {
-    const store = useStoreStore();
+    const mainStore = useMainStore();
     const modalStore = useModalStore();
 
     const modalWord = ref('');
@@ -19,10 +19,10 @@ export const useInputWordStore = defineStore('inputWord', () => {
     }
  
     function createSimilarWords(wordAndMean) {
-
         const MAX = wordAndMean.length >= 3 ? 3 : wordAndMean.length;
         return wordAndMean.slice(0, MAX).map(item => item[1]);
     }
+
     function checkWordSame(word1, word2) {
         const w1 = word1.toLowerCase();
         const w2 = word2.toLowerCase();
@@ -45,14 +45,16 @@ export const useInputWordStore = defineStore('inputWord', () => {
         modalSimilarWords.value = [...createSimilarWords(wordAndMean)];
         modalStore.inputSimilarModal = true;
     }
+
     function caseNomalWord(wordAndMean) {
         dataInitialization();
         modalWord.value = wordAndMean[0][1];
         modalMeans.value = wordAndMean[0][2].split(',');
-        store.wordRecentUpdate(modalWord.value); 
+        mainStore.wordRecentUpdate(modalWord.value); 
         modalStore.inputModal = true;
         console.log(modalWord.value, modalMeans.value);
     }
+
     function wordAndMeanSplit(data) {
         const searchWordMean = [];
         data.data.items.lan.forEach(item => {
@@ -60,6 +62,7 @@ export const useInputWordStore = defineStore('inputWord', () => {
         });
         return searchWordMean;
     }
+
     async function wordSearch(searchWord) {
         const data = await fetchWordList(searchWord);
 
@@ -76,16 +79,15 @@ export const useInputWordStore = defineStore('inputWord', () => {
     function caseNomalCreate() {
         return [modalWord.value, modalMeans.value];
     }
+
     function caseNotExistCreate() {
         return [modalWord.value, modalMeans.value];
     }
+
     function caseSimilarCreate() {
-        console.log(modalWord.value)
-        console.log(modalSimilarWords.value)
         return [modalWord.value, modalSimilarWords.value];
     }
     
-
     return {
         caseNotExistenceWord,
         caseSimilarWord,

@@ -1,6 +1,6 @@
 <script setup>
 import { Icon } from '@iconify/vue';
-import { useStoreStore } from '../stores/store';
+import { useMainStore } from '../stores/Main';
 import { ref } from 'vue';
 
 const props = defineProps({
@@ -10,7 +10,7 @@ const props = defineProps({
     index: Number,
 })
 const emits = defineEmits(['detail']);
-const store = useStoreStore();
+const mainStore = useMainStore();
 
 const word = ref(props.word);
 const means = ref(props.means);
@@ -24,7 +24,7 @@ function transmit() {
 
 function checkBtnClick() {
     check.value = !check.value;
-    store.wordCheck(word.value, check.value, index.value);
+    mainStore.wordCheck(word.value, check.value, index.value);
 }
 
 </script>

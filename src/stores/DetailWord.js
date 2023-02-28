@@ -2,32 +2,34 @@ import { defineStore } from 'pinia';
 import { ref } from 'vue'; 
 
 import { useModalStore } from './modal';
-import { useStoreStore } from './store';
+import { useMainStore } from './Main';
 
 
 export const useDetailWordStore = defineStore('detailWord', () => {
-    const store = useStoreStore();
+    const mainStore = useMainStore();
     const modalStore = useModalStore();
     const detailWord = ref(null);
     const trashCanDetailWord = ref(null);
 
     function detailWordOpen(targetWord) {
-        detailWord.value = store.wordDetail(targetWord);
+        detailWord.value = mainStore.wordDetail(targetWord);
         console.log(detailWord.value);
         modalStore.detailModal = true;
     }
 
     function trashCanWordOpen(targetWord) {
-        trashCanDetailWord.value = store.trashCanWordDetail(targetWord);
+        trashCanDetailWord.value = mainStore.trashCanWordDetail(targetWord);
         modalStore.trashCanWordModal = true;
     }
+
     function trashCanDetailWordModal() {
         return trashCanDetailWord.value;
     }
+
     function detailWordModal() {
-        console.log(detailWord)
         return detailWord.value;
     }
+
     return {
         trashCanWordOpen,
         trashCanDetailWordModal,

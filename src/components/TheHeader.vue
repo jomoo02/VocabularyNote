@@ -1,6 +1,6 @@
 <script setup>
 import { Icon } from '@iconify/vue';
-import { useStoreStore } from '@/stores/store';
+import { useMainStore } from '@/stores/Main';
 import { useModalStore } from '@/stores/modal';
 import { ref } from 'vue';
 import WordInput from './WordInput.vue';
@@ -8,12 +8,12 @@ import ModalCaseNomal from './ModalCaseNomal.vue';
 import ModalCaseNotExist from './ModalCaseNotExist.vue';
 import ModalCaseSimilar from './ModalCaseSimilar.vue';
 
-const store = useStoreStore();
+const mainStore = useMainStore();
 const modalStore = useModalStore();
 const child_input = ref(null);
 
 function contentChangeClick() {
-    store.contentChange();
+    mainStore.contentChange();
     child_input.value.childComponent();
 }
 
@@ -29,8 +29,8 @@ function contentChangeClick() {
         </div>
         <!-- btn -->
         <button @click="contentChangeClick">
-            <Icon icon="ph:trash" width="34" height="34" color="#e4e4e7" :class="store.screenTransition === 0 ? 'block' : 'hidden'" />
-            <Icon icon="ph:notepad" width="34" height="36" color="#e4e4e7" :class="store.screenTransition === 1 ? 'block' : 'hidden'"/>
+            <Icon icon="ph:trash" width="34" height="34" color="#e4e4e7" :class="mainStore.screenTransition === 0 ? 'block' : 'hidden'" />
+            <Icon icon="ph:notepad" width="34" height="36" color="#e4e4e7" :class="mainStore.screenTransition === 1 ? 'block' : 'hidden'"/>
         </button>
         
         <!-- modal -->

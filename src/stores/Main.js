@@ -3,7 +3,7 @@ import { defineStore } from 'pinia';
 import { useStorage } from '@vueuse/core';
 import { useModalStore } from './modal';
 
-export const useStoreStore = defineStore('store', () => {
+export const useMainStore = defineStore('main', () => {
   const modalStore = useModalStore();
 
   // 휴지통, 메인화면 전환 0: 메인, 1: 휴지통
