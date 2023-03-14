@@ -32,7 +32,7 @@ function similarWordClick(targetWord) {
         </template>
         <template #footer>
             <div class="flex">
-                <button @click="modalStore.inputSimilarModal = false" class="modal_btn px-3.5 bg-blue-500 hover:bg-blue-600">ok</button>
+                <button @click="modalStore.modalExit" class="modal_btn px-3.5 bg-blue-500 hover:bg-blue-600">ok</button>
             </div>
         </template>
     </TheModal>

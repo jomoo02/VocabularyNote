@@ -34,7 +34,6 @@ onKeyStroke(['Enter'], (e) => {
   <header class="pb-16">
       <TheHeader></TheHeader>
   </header>
-
   <main class="pt-[32px] px-10 md:px-24 lg:px-32 2xl:px-80 min-h-screen">
     <WordList></WordList>
   </main>

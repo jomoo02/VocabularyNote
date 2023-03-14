@@ -4,12 +4,11 @@ import { useMainStore } from '../stores/Main';
 import { ref } from 'vue';
 import { useDetailWordStore } from '../stores/DetailWord';
 
-
 const mainStore = useMainStore();
 const detailWordStore = useDetailWordStore();
 const detailTrashWord = ref(null);
 
-detailTrashWord.value = {...detailWordStore.trashCanDetailWordModal()};
+detailTrashWord.value = {...detailWordStore.trashCanDetailWordModalCreate()};
 
 </script>
 

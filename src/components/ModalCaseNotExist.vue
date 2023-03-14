@@ -1,7 +1,7 @@
 <script setup>
 import TheModal from './TheModal.vue';
 import { useInputWordStore } from '../stores/InputWord';
-import { useModalStore } from '../stores/modal';
+import { useModalStore } from '../stores/Modal';
 import { ref } from 'vue';
 
 const modalStore = useModalStore();
@@ -27,7 +27,7 @@ means.value = modalMeans;
         </template>
         <template #footer>
             <div class="flex">
-                <button @click="modalStore.inputNotExistModal = false" class="modal_btn px-3.5 bg-blue-500 hover:bg-blue-600">ok</button>
+                <button @click="modalStore.modalExit" class="modal_btn px-3.5 bg-blue-500 hover:bg-blue-600">ok</button>
             </div>
         </template>
     </TheModal>

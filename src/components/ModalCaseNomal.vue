@@ -2,7 +2,7 @@
 import TheModal from './TheModal.vue';
 import { useMainStore } from '../stores/Main';
 import { useInputWordStore } from '../stores/InputWord';
-import { useModalStore } from '../stores/modal';
+import { useModalStore } from '../stores/Modal';
 import { ref } from 'vue';
 
 const mainStore = useMainStore();

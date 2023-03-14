@@ -9,7 +9,7 @@ const props = defineProps({
     check: Boolean,
     index: Number,
 })
-const emits = defineEmits(['detail']);
+const emits = defineEmits(['wordDetail']);
 const mainStore = useMainStore();
 
 const word = ref(props.word);
@@ -19,7 +19,7 @@ const index = ref(props.index);
 
 
 function transmit() {
-    emits('detail', word.value);
+    emits('wordDetail', word.value);
 }
 
 function checkBtnClick() {
@@ -34,14 +34,14 @@ function checkBtnClick() {
         <div class="flex gap-x-1">
             <!-- check Icon -->
             <button>
-                <Icon v-if="check" class="flex items-center" @click="checkBtnClick" icon="carbon:checkbox" width="37" height="37"></Icon>
+                <Icon v-if="check===false" class="flex items-center" @click="checkBtnClick" icon="carbon:checkbox" width="37" height="37"></Icon>
                 <Icon v-else class="flex items-center" @click="checkBtnClick" icon="carbon:checkbox-checked" width="37" height="37"></Icon>
             </button>
             <!-- word -->
-            <span class="card_word" :class="check === false ? 'wordcheck_active':''" @click="transmit">{{ word }}</span>
+            <span class="card_word" :class="{ wordcheck_active: check }" @click="transmit">{{ word }}</span>
         </div>
         <!-- mean -->
-        <div :class="check === false ? 'wordcheck_active':''">
+        <div :class="{ wordcheck_active: check }">
             <li v-for="mean in means.split(',')" :key="mean" class="card_content">
                 {{ mean }}
             </li>

@@ -4,7 +4,7 @@ import { useModalStore } from '../stores/modal';
 import { useDetailWordStore } from '../stores/DetailWord';
 import WordCard from './WordCard.vue';
 import WordTrashCan from './WordTrashCan.vue';
-import ModalTrashcanWord from './ModalTrashcanWord.vue';
+import ModalTrashCanWordDetail from './ModalTrashCanWordDetail.vue';
 import ModalWordDetail from './ModalWordDetail.vue';
 
 const mainStore = useMainStore();
@@ -18,14 +18,14 @@ const detailStore = useDetailWordStore();
         <template v-if="mainStore.screenTransition === 0">
             <div class="grid md:grid-cols-2 md:gap-x-36">
                 <div v-for="(word, index) in mainStore.wordArr" :key="word" class="mb-[32px]">
-                    <WordCard :word="word.word" :means="word.means" :check="word.check" :index="index" @detail="(targetWord) => detailStore.detailWordOpen(targetWord)"></WordCard>
+                    <WordCard :word="word.word" :means="word.means" :check="word.check" :index="index" @wordDetail="(targetWord) => detailStore.detailWordOpen(targetWord)"></WordCard>
                 </div>
             </div>
         </template>
         <template v-if="mainStore.screenTransition === 1">
             <div>
                 <div v-for="word in mainStore.localTrashCan.values()" :key="word" class="mb-[32px]">
-                    <WordTrashCan :word="word.word" :means="word.means.split(',')" :time="word.time" :afterTime="word.afterTime" @trashCanWord="(targetWord) => detailStore.trashCanWordOpen(targetWord)"></WordTrashCan>
+                    <WordTrashCan :word="word.word" :means="word.means.split(',')" :time="word.time" :afterTime="word.afterTime" @trashCanWordDetail="(targetWord) => detailStore.trashCanDetailWordOpen(targetWord)"></WordTrashCan>
                 </div>
             </div>
         </template>
@@ -34,7 +34,7 @@ const detailStore = useDetailWordStore();
                 <ModalWordDetail v-if="modalStore.detailModal" />
             </Transition>
             <Transition name="slide-fade">
-                <ModalTrashcanWord v-if="modalStore.trashCanWordModal" />
+                <ModalTrashCanWordDetail v-if="modalStore.trashCanWordModal" />
             </Transition>
         </Teleport>
     </div>

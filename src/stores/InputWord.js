@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue'; 
 import { useMainStore } from './Main';
-import { useModalStore } from './modal';
+import { useModalStore } from './Modal';
 import { fetchWordList } from '../../api';
 
 export const useInputWordStore = defineStore('inputWord', () => {
@@ -50,9 +50,8 @@ export const useInputWordStore = defineStore('inputWord', () => {
         dataInitialization();
         modalWord.value = wordAndMean[0][1];
         modalMeans.value = wordAndMean[0][2].split(',');
-        mainStore.wordRecentUpdate(modalWord.value); 
+        mainStore.recentWordUpdate(modalWord.value); 
         modalStore.inputModal = true;
-        console.log(modalWord.value, modalMeans.value);
     }
 
     function wordAndMeanSplit(data) {
@@ -71,7 +70,6 @@ export const useInputWordStore = defineStore('inputWord', () => {
         }
         else {
             const wordAndMean = [...wordAndMeanSplit(data)];
-           
             checkWordSame(searchWord, wordAndMean[0][1]) ? caseNomalWord(wordAndMean) : caseSimilarWord(searchWord, wordAndMean);
         }
     }

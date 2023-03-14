@@ -5,10 +5,10 @@ const props = defineProps({
     time: String,
     afterTime: String,
 })
-const emits = defineEmits(['trashCanWord']);
+const emits = defineEmits(['trashCanWordDetail']);
 
 function trashCanWordDetail() {
-    emits('trashCanWord', props.word);
+    emits('trashCanWordDetail', props.word);
 }
 
 </script>

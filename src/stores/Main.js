@@ -1,11 +1,10 @@
 import { ref } from 'vue';
 import { defineStore } from 'pinia';
 import { useStorage } from '@vueuse/core';
-import { useModalStore } from './modal';
+import { useModalStore } from './Modal';
 
 export const useMainStore = defineStore('main', () => {
   const modalStore = useModalStore();
-
   // 휴지통, 메인화면 전환 0: 메인, 1: 휴지통
   const screenTransition = ref(0);
 
@@ -40,7 +39,6 @@ export const useMainStore = defineStore('main', () => {
     wordArr.value = [...localWordsToArr].reverse();
   }
 
-
   // init: localStorage에 있는 단어들 set
   function setWordDic() {
     wordArrUpdate();
@@ -52,41 +50,29 @@ export const useMainStore = defineStore('main', () => {
       }
     }
   }
-
-  // recent words update
-  function wordRecentUpdate(searchWord) {
-    // 중복 확인
-    const repeatCheckIndex = localRecentSearchWords.value.findIndex((word) => word === searchWord);
-    const recentWords = repeatCheckIndex !== -1 ? [...localRecentSearchWords.value.slice(0, repeatCheckIndex), ...localRecentSearchWords.value.slice(repeatCheckIndex+1)] : [...localRecentSearchWords.value];
-    recentWords.length >= 5 ? recentWords.pop() : '';
-
-    localRecentSearchWords.value = [searchWord, ...recentWords];
-  }
-
-  // 최근 단어 삭제
-  function recentWordDelete(index) {
-    const recentWords = [...localRecentSearchWords.value.slice(0, index), ...localRecentSearchWords.value.slice(index+1)];
-    localRecentSearchWords.value = [...recentWords];
-  }
-
   // word add
   function wordAdd(word, means) {
     const { nowTime, timestamp } = getTimeAndTimestamp();
-    const item = { word, means: means.toString(), timestamp, time: nowTime, check: true };
+    const item = { word, means: means.toString(), timestamp, time: nowTime, check: false };
     // 이미 단어가 존재하면 지웠다가 저장
     if (localWords.value.has(word)) {
-      localWords.value.delete(word);
+    localWords.value.delete(word);
     }
     localWords.value.set(word, item);
     wordArrUpdate();
-
     modalStore.modalExit();
+  }
+
+  // word check
+  function wordCheck(targetWord, ch, index) {
+    wordArr.value[index].check = ch;
+    const checkedWord = localWords.value.get(targetWord);
+    checkedWord.check = ch
+    localWords.value.set(targetWord, checkedWord);
   }
 
   // word delete
   function wordDelete(targetWord) {
-    console.log("delete:", targetWord)
-
     const { nowTime, timestamp, afterTime, afterTimestamp} = getTimeAndTimestampAfterDay(14);
     const deleteWord = { word: targetWord, means: localWords.value.get(targetWord).means, time: nowTime, timestamp, afterTimestamp, afterTime };
 
@@ -105,21 +91,12 @@ export const useMainStore = defineStore('main', () => {
     screenTransition.value = screenTransition.value === 0 ? 1 : 0;
   }
 
-  // word check
-  function wordCheck(targetWord, ch, index) {
-    wordArr.value[index].check = ch;
-
-    const checkedWord = localWords.value.get(targetWord);
-    checkedWord.check = ch
-    localWords.value.set(targetWord, checkedWord);
-  }
-  
   // word detail
   function wordDetail(targetWord) {
     const { word, means, time } = localWords.value.get(targetWord);
     const detailWord = { word, means: means.split(','), time };
     return detailWord;
-}
+  }
 
   // trashCan word detail
   function trashCanWordDetail(targetWord) {
@@ -141,17 +118,37 @@ export const useMainStore = defineStore('main', () => {
     trashCanWordKill(word);
   }
 
-  return { localTrashCan, localRecentSearchWords, wordArr, screenTransition,
+  // recent words update
+  function recentWordUpdate(searchWord) {
+    // 중복 확인
+    const repeatCheckIndex = localRecentSearchWords.value.findIndex((word) => word === searchWord);
+    const recentWords = repeatCheckIndex !== -1 ? [...localRecentSearchWords.value.slice(0, repeatCheckIndex), ...localRecentSearchWords.value.slice(repeatCheckIndex+1)] : [...localRecentSearchWords.value];
+    recentWords.length >= 5 ? recentWords.pop() : '';
+
+    localRecentSearchWords.value = [searchWord, ...recentWords];
+  }
+
+  // recent words delete
+  function recentWordDelete(index) {
+    const recentWords = [...localRecentSearchWords.value.slice(0, index), ...localRecentSearchWords.value.slice(index+1)];
+    localRecentSearchWords.value = [...recentWords];
+  }
+
+  return { 
+    wordArr, 
+    localTrashCan, 
+    localRecentSearchWords, 
+    screenTransition,
     setWordDic,
     wordAdd,
-    wordRecentUpdate,
-    wordDetail,
-    wordDelete,
     wordCheck, 
+    wordDelete,
     contentChange,
-    trashCanWordRestore, 
-    trashCanWordKill, 
+    wordDetail,
     trashCanWordDetail, 
+    trashCanWordKill, 
+    trashCanWordRestore, 
+    recentWordUpdate,
     recentWordDelete, 
   };
 })

@@ -6,18 +6,18 @@ import { useMainStore } from '@/stores/Main';
 import { useInputWordStore } from '../stores/InputWord';
 
 const mainStore = useMainStore();
-const wordStore = useInputWordStore();
+const inputWordStore = useInputWordStore();
 
 const wordSearch_input = ref(null);
 const search_btn = ref(null);
 const inputWord = ref('');
-const recentWordFoucs = ref(false);
+const recentWordFocus = ref(false);
 
 const outFocusInput = (e) => {
     if (e.target.tagName !== 'svg' && e.target.tagName !== 'path' && !e.target.classList.contains('inputTag')) {
-        recentWordFoucs.value = false;
+        recentWordFocus.value = false;
     }
-}
+};
 
 onMounted(() => {
     console.log("onMounted:")
@@ -40,7 +40,7 @@ function inputTagFoucs() {
 
 function childComponent() {
     if (mainStore.screenTransition === 1) {
-        recentWordFoucs.value = false;
+        recentWordFocus.value = false;
         toggleInputAndBtn();
     }
     else {
@@ -69,27 +69,29 @@ function wordSearch(searchWord) {
         return;
     }
     toggleInputAndBtn();
-    wordStore.wordSearch(searchWord);
+    inputWordStore.wordSearch(searchWord);
 
     toggleInputAndBtn();
     inputWord.value = '';
-    recentWordFoucs.value = false;
+    recentWordFocus.value = false;
 }
+
 defineExpose({
     childComponent,
 })
+
 </script>
 
 <template>
-    <div class="">
+    <div>
         <div class="h-9 px-3 border flex items-center bg-white border-black inputTag" ref="input_container">
             <button v-show="inputWord.length>0" @click="inputWordClear"><Icon icon="ph:x-bold"></Icon></button>
-            <input ref=wordSearch_input placeholder="단어를 입력해주세요" :value="inputWord" @keyup.enter="wordSearch(inputWord)" @focus="recentWordFoucs = true"
+            <input ref=wordSearch_input placeholder="단어를 입력해주세요" :value="inputWord" @keyup.enter="wordSearch(inputWord)" @focus="recentWordFocus = true"
             @input="event => inputWord = event.target.value" class="w-full px-2 focus:outline-0 inputTag"/>
             <button ref="search_btn" class="inputTag" @click="wordSearch(inputWord)"><Icon icon="ion:search" width="24" height="24"/></button>
         </div>
         <!-- 최근 검색한 단어 -->
-        <div v-show="recentWordFoucs" class="absolute w-full bg-white border-[1.5px] border-black inputTag">
+        <div v-show="recentWordFocus" class="absolute w-full bg-white border-[1.5px] border-black inputTag">
             <div class="text-[12px] text-slate-500 font-semibold px-2 py-0.5 inputTag">최근 검색한 단어</div>
             <div v-for="(word, index) in mainStore.localRecentSearchWords" :key="index" class="flex items-center justify-between px-2 inputTag">
                 <button><span @click="wordSearch(word)" class="text-sm inputTag">{{ word }}</span></button>

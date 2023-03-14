@@ -7,7 +7,6 @@ export const useModalStore = defineStore('modal', {
         inputSimilarModal: false,
         detailModal: false,
         trashCanWordModal: false,
-
     }),
     actions: {
         modalExit() {
@@ -16,7 +15,6 @@ export const useModalStore = defineStore('modal', {
             this.inputSimilarModal = false;
             this.detailModal = false;
             this.trashCanWordModal = false;
-
         }
     }
 });
