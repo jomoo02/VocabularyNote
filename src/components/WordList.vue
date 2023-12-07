@@ -1,15 +1,9 @@
 <script setup>
 import { useMainStore } from '../stores/Main';
-import { useModalStore } from '../stores/Modal';
-import { useDetailWordStore } from '../stores/DetailWord';
-import WordCard from './WordCard.vue';
-import WordTrashCan from './WordTrashCan.vue';
-import ModalTrashCanWordDetail from './ModalTrashCanWordDetail.vue';
-import ModalWordDetail from './ModalWordDetail.vue';
+import WordCardV2 from './WordCardV2.vue';
+import WordTrashCanV2 from './WordTrashCanV2.vue';
 
 const mainStore = useMainStore();
-const modalStore = useModalStore();
-const detailStore = useDetailWordStore();
 </script>
 
 <template>
@@ -21,13 +15,13 @@ const detailStore = useDetailWordStore();
           :key="word"
           class="mb-[32px]"
         >
-          <WordCard
+          <WordCardV2
             :word="word.word"
             :means="word.means"
             :check="word.check"
+            :time="word.time"
             :index="index"
-            @wordDetail="(targetWord) => detailStore.detailWordOpen(targetWord)"
-          ></WordCard>
+          ></WordCardV2>
         </div>
       </div>
     </template>
@@ -38,26 +32,15 @@ const detailStore = useDetailWordStore();
           :key="word"
           class="mb-[32px]"
         >
-          <WordTrashCan
+          <WordTrashCanV2
             :word="word.word"
-            :means="word.means.split(',')"
+            :means="word.means"
             :time="word.time"
             :afterTime="word.afterTime"
-            @trashCanWordDetail="
-              (targetWord) => detailStore.trashCanDetailWordOpen(targetWord)
-            "
-          ></WordTrashCan>
+          ></WordTrashCanV2>
         </div>
       </div>
     </template>
-    <Teleport to="body">
-      <Transition name="slide-fade">
-        <ModalWordDetail v-if="modalStore.detailModal" />
-      </Transition>
-      <Transition name="slide-fade">
-        <ModalTrashCanWordDetail v-if="modalStore.trashCanWordModal" />
-      </Transition>
-    </Teleport>
   </div>
 </template>
 

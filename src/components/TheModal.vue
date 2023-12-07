@@ -1,9 +1,9 @@
 <script setup>
 import { Icon } from '@iconify/vue';
+import { onKeyStroke } from '@vueuse/core';
 import { onMounted, onUnmounted } from 'vue';
-import { useModalStore } from '../stores/Modal';
 
-const modalStore = useModalStore();
+const emits = defineEmits(['clickCloseIcon']);
 
 onMounted(() => {
   document.body.classList.add('overflow-y-hidden');
@@ -11,6 +11,14 @@ onMounted(() => {
 
 onUnmounted(() => {
   document.body.classList.remove('overflow-y-hidden');
+});
+
+function clickCloseIcon() {
+  emits('clickCloseIcon');
+}
+
+onKeyStroke(['Escape'], () => {
+  clickCloseIcon();
 });
 </script>
 
@@ -21,7 +29,7 @@ onUnmounted(() => {
         class="relative py-6 px-6 w-[480px] h-[400px] bg-white rounded-md border border-slate-400 overflow-auto"
       >
         <div class="flex justify-end">
-          <button @click="modalStore.modalExit">
+          <button @click="clickCloseIcon">
             <Icon icon="ion:close" width="30" heihgt="30" />
           </button>
         </div>

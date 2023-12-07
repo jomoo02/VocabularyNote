@@ -12,17 +12,17 @@ const wordStore = useInputWordStore();
 
 mainStore.setWordDic();
 
-onKeyStroke(['Escape'], () => {
-  if (
-    modalStore.inputModal ||
-    modalStore.detailModal ||
-    modalStore.trashCanWordModal ||
-    modalStore.inputNotExistModal ||
-    modalStore.inputSimilarModal
-  ) {
-    modalStore.modalExit();
-  }
-});
+// onKeyStroke(['Escape'], () => {
+//   if (
+//     modalStore.inputModal ||
+//     modalStore.detailModal ||
+//     modalStore.trashCanWordModal ||
+//     modalStore.inputNotExistModal ||
+//     modalStore.inputSimilarModal
+//   ) {
+//     modalStore.modalExit();
+//   }
+// });
 
 onKeyStroke(['Enter'], () => {
   if (modalStore.inputModal) {
