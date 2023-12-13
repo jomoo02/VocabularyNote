@@ -1,17 +1,15 @@
-import { ref, toValue } from 'vue';
+import { ref, toValue, watchEffect } from 'vue';
+import MODAL_CASE from '../constant';
 
 const baseUrl = '/search/language/v1/search.json?cate=lan';
 
-async function useWordSearch(searchWord, searchCases) {
-  const searchWordToValue = toValue(searchWord);
+function useSearchWord(searchWord) {
   const data = ref(null);
   const searchCase = ref(null);
   const error = ref(null);
 
-  const { CASE_NORMAL, CASE_MISSING, CASE_SIMILAR } = searchCases;
-
   const checkNormalCase = (words) => {
-    return words.toLowerCase() === searchWordToValue.toLowerCase();
+    return words.toLowerCase() === toValue(searchWord).toLowerCase();
   };
 
   const filterItems = (items) => {
@@ -19,33 +17,39 @@ async function useWordSearch(searchWord, searchCases) {
   };
 
   const decideSearchCase = (items) => {
+    const { normal, similar, missing } = MODAL_CASE;
     if (items.length === 0) {
-      return CASE_MISSING;
+      return missing;
     }
     if (checkNormalCase(items[0].key)) {
-      return CASE_NORMAL;
+      return normal;
     }
-    return CASE_SIMILAR;
+    return similar;
   };
 
-  const fetchData = async () => {
+  async function fetchData() {
     data.value = null;
     searchCase.value = null;
     error.value = null;
 
-    await fetch(`${baseUrl}&q=${searchWordToValue}`)
+    await fetch(`${baseUrl}&q=${toValue(searchWord)}`)
       .then((res) => res.json())
       .then(({ items }) => {
         const filterdItems = filterItems(items);
         searchCase.value = decideSearchCase(filterdItems);
         data.value = filterdItems;
       })
-      .catch((err) => (error.value = err));
-  };
+      .catch((err) => {
+        error.value = err;
+        console.log(err);
+      });
+  }
 
-  await fetchData();
+  watchEffect(() => {
+    fetchData();
+  });
 
   return { data, searchCase, error };
 }
 
-export default useWordSearch;
+export default useSearchWord;
