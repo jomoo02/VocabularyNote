@@ -13,7 +13,6 @@ const props = defineProps({
 });
 
 const mainStore = useMainStore();
-
 const means = computed(() => props.means.split(','));
 const openWordDetail = ref(false);
 

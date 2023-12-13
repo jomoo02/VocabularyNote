@@ -1,5 +1,5 @@
 <script setup>
-import Modal from './TheModal.vue';
+import TheModal from './TheModal.vue';
 
 const props = defineProps({
   word: String,
@@ -19,7 +19,7 @@ function deleteWord() {
 </script>
 
 <template>
-  <Modal @clickCloseIcon="closeDetailWord">
+  <TheModal @clickCloseIcon="closeDetailWord">
     <template #word>
       {{ props.word }}
     </template>
@@ -45,5 +45,5 @@ function deleteWord() {
         </button>
       </div>
     </template>
-  </Modal>
+  </TheModal>
 </template>

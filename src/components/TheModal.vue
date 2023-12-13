@@ -23,7 +23,7 @@ onKeyStroke(['Escape'], () => {
 </script>
 
 <template>
-  <div class="fixed z-[999] inset-0 w-full h-full bg-[#656C85CC]" tabindex="0">
+  <div class="fixed z-[999] inset-0 w-full bg-[#656C85CC]" tabindex="0">
     <div class="relative flex justify-center mx-2 xs:mx-9 sm:mx-10 mt-[80px]">
       <div
         class="relative py-6 px-6 w-[480px] h-[400px] bg-white rounded-md border border-slate-400 overflow-auto"

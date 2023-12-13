@@ -1,10 +1,8 @@
 import { ref } from 'vue';
 import { defineStore } from 'pinia';
 import { useStorage } from '@vueuse/core';
-import { useModalStore } from './Modal';
 
 export const useMainStore = defineStore('main', () => {
-  const modalStore = useModalStore();
   // 휴지통, 메인화면 전환 0: 메인, 1: 휴지통
   const screenTransition = ref(0);
 
@@ -72,7 +70,6 @@ export const useMainStore = defineStore('main', () => {
 
     localWords.value.set(word, item);
     wordArrUpdate();
-    modalStore.modalExit();
   }
 
   // word check
@@ -104,7 +101,6 @@ export const useMainStore = defineStore('main', () => {
     }
 
     localTrashCan.value.set(targetWord, deleteWord);
-    modalStore.modalExit();
   }
 
   // 화면간 단어 <-> 휴지통 교체
@@ -135,7 +131,6 @@ export const useMainStore = defineStore('main', () => {
   // trashCan word kill
   function trashCanWordKill(targetWord) {
     localTrashCan.value.delete(targetWord);
-    modalStore.modalExit();
   }
 
   // trashCan word restore

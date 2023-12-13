@@ -5,7 +5,11 @@ const config = {
 };
 
 function fetchWordList(word) {
-  return axios.get(`${config.baseUrl}&q=${word}`);
+  // const data1 = await axios.get(`${config.baseUrl}&q=${word}`);
+  const fetchData = fetch(`${config.baseUrl}&q=${word}`)
+    .then((res) => res.json())
+    .catch((error) => console.log(error));
+  return fetchData;
 }
 
 export { fetchWordList };

@@ -2,12 +2,10 @@
 import { onMounted, ref, onBeforeUnmount } from 'vue';
 import { Icon } from '@iconify/vue';
 import { useMainStore } from '@/stores/Main';
-
 import { useInputWordStore } from '../stores/InputWord';
 
 const mainStore = useMainStore();
 const inputWordStore = useInputWordStore();
-
 const wordSearch_input = ref(null);
 const search_btn = ref(null);
 const inputWord = ref('');
@@ -61,14 +59,24 @@ function recentWordDeleteClick(index) {
   inputTagFoucs();
 }
 
-function caseEmptyWord() {
-  window.alert('단어를 입력해 주세요.');
+function alertInputCondition() {
+  window.alert('영어 단어를 입력해 주세요.');
   inputTagFoucs();
 }
 
+function checkEmptyWord(searchWord) {
+  return searchWord === '';
+}
+
+function checkNotEnglishWord(searchWord) {
+  const reg = /[^a-zA-Z]/.test(searchWord);
+  return reg;
+}
+
 function wordSearch(searchWord) {
-  if (searchWord === '') {
-    caseEmptyWord();
+  if (checkEmptyWord(searchWord || checkNotEnglishWord(searchWord))) {
+    alertInputCondition();
+    inputWord.value = '';
     return;
   }
 
