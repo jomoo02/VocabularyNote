@@ -11,9 +11,9 @@ function useNormalCase(targetWord, wordData) {
         .filter(({ key }) => key === targetWordToValue)
         .map((targetWordData) => targetWordData.item),
     );
-    return targetWordsMeans.flatMap((targetWordItem) =>
-      targetWordItem.split('|').pop().split(', '),
-    );
+    return targetWordsMeans
+      .flatMap((targetWordItem) => targetWordItem.split('|').pop().split(', '))
+      .slice(0, 6);
   }
 
   means.value = pickTargetWordMeans();

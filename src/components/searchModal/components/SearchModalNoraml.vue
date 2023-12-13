@@ -3,23 +3,35 @@ import TheModal from '../../TheModal.vue';
 import useNormalCase from '../compositions/normalCase';
 import { useMainStore } from '../../../stores/Main';
 import { useSearchStore } from '../compositions/searchStore';
+import { onMounted } from 'vue';
+import { onKeyStroke } from '@vueuse/core';
 
 const props = defineProps({
   searchData: Array,
 });
 
-const mainStroe = useMainStore();
+const mainStore = useMainStore();
 const searchStore = useSearchStore();
 const searchWord = searchStore.targetWord;
 const { means: searchWordMeas } = useNormalCase(searchWord, props.searchData);
+
+onMounted(() => {
+  addRecentSearchWord();
+});
+
+onKeyStroke(['Enter'], () => addWord());
 
 function closeModal() {
   searchStore.closeSearchModal();
 }
 
 function addWord() {
-  mainStroe.wordAdd(searchWord, searchWordMeas.value);
+  mainStore.wordAdd(searchWord, searchWordMeas.value);
   closeModal();
+}
+
+function addRecentSearchWord() {
+  mainStore.recentWordUpdate(searchWord);
 }
 </script>
 

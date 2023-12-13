@@ -1,11 +1,11 @@
 <script setup>
 import TheModal from '../../TheModal.vue';
-import useMissingCase from '../compositions/missingCase';
+import useErrorCase from '../compositions/errorCase';
 import { useSearchStore } from '../compositions/searchStore';
 import { onKeyStroke } from '@vueuse/core';
 
 const searchStore = useSearchStore();
-const { missingPhrase } = useMissingCase();
+const { errorPhase } = useErrorCase();
 
 onKeyStroke(['Enter'], () => closeModal());
 
@@ -21,7 +21,7 @@ function closeModal() {
     </template>
     <template #means>
       <li
-        v-for="phrase in missingPhrase"
+        v-for="phrase in errorPhase"
         :key="phrase"
         class="modal_means list-none"
       >

@@ -2,6 +2,7 @@
 import TheModal from '../../TheModal.vue';
 import useSimilarCase from '../compositions/similarCase';
 import { useSearchStore } from '../compositions/searchStore';
+import { onKeyStroke } from '@vueuse/core';
 
 const props = defineProps({
   searchData: Array,
@@ -10,6 +11,8 @@ const props = defineProps({
 const searchStore = useSearchStore();
 const searchWord = searchStore.targetWord;
 const { similarWords } = useSimilarCase(props.searchData);
+
+onKeyStroke(['Enter'], () => closeModal());
 
 function clickSimilarWord(similarWord) {
   searchStore.searchSimilarWord(similarWord);

@@ -7,33 +7,43 @@ async function useWordSearch(searchWord, searchCases) {
   const data = ref(null);
   const searchCase = ref(null);
   const error = ref(null);
+
   const { CASE_NORMAL, CASE_MISSING, CASE_SIMILAR } = searchCases;
 
   const checkNormalCase = (words) => {
     return words.toLowerCase() === searchWordToValue.toLowerCase();
   };
 
-  const fetchData = async (searchWord) => {
+  const filterItems = (items) => {
+    return items.lan.filter((item) => /[a-zA-Z]/.test(item.key));
+  };
+
+  const decideSearchCase = (items) => {
+    if (items.length === 0) {
+      return CASE_MISSING;
+    }
+    if (checkNormalCase(items[0].key)) {
+      return CASE_NORMAL;
+    }
+    return CASE_SIMILAR;
+  };
+
+  const fetchData = async () => {
     data.value = null;
     searchCase.value = null;
     error.value = null;
 
-    await fetch(`${baseUrl}&q=${searchWord}`)
+    await fetch(`${baseUrl}&q=${searchWordToValue}`)
       .then((res) => res.json())
       .then(({ items }) => {
-        if (items.lan.length === 0) {
-          searchCase.value = CASE_MISSING;
-        } else if (checkNormalCase(items.lan[0].key)) {
-          searchCase.value = CASE_NORMAL;
-        } else {
-          searchCase.value = CASE_SIMILAR;
-        }
-        data.value = items.lan;
+        const filterdItems = filterItems(items);
+        searchCase.value = decideSearchCase(filterdItems);
+        data.value = filterdItems;
       })
       .catch((err) => (error.value = err));
   };
 
-  await fetchData(searchWordToValue);
+  await fetchData();
 
   return { data, searchCase, error };
 }
