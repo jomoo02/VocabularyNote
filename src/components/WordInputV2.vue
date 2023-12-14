@@ -1,19 +1,17 @@
 <script setup>
-import { useMainStore } from '../stores/Main';
 import { Icon } from '@iconify/vue';
 import { onMounted, onBeforeUnmount, ref, watch, computed } from 'vue';
 import SearchModal from '../components/searchModal/components/SearchModal.vue';
 import { useSearchStore } from './searchModal/compositions/searchStore';
+import RecentSearch from './recentSearch/components/RecentSearch.vue';
 
 const INPUT_WORD = '단어를 입력해주세요';
 const CAN_NOT_INPUT_WORD = '단어를 입력할 수 없습니다';
-const RECENT_SEARCH_WORD = '최근 검색한 단어';
 
 const props = defineProps({
   available: Boolean,
 });
 
-const mainStore = useMainStore();
 const searchStore = useSearchStore();
 const inputWord = ref('');
 const recentWordsFocus = ref(false);
@@ -65,11 +63,6 @@ function focusInput() {
 
 function clearInputWord() {
   inputWord.value = '';
-  focusInput();
-}
-
-function clickRecentWordDeleteIcon(wordIndex) {
-  mainStore.recentWordDelete(wordIndex);
   focusInput();
 }
 
@@ -128,28 +121,10 @@ function searchInputWord() {
         <Icon icon="ion:search" width="24" height="24" />
       </button>
     </div>
-    <div
+    <RecentSearch
       v-show="recentWordsFocus"
-      class="absolute w-full bg-white border-[1.5px] border-black"
-    >
-      <div class="text-[12px] text-slate-500 font-semibold px-2 py-0.5">
-        {{ RECENT_SEARCH_WORD }}
-      </div>
-      <div
-        v-for="(word, index) in mainStore.localRecentSearchWords"
-        :key="index"
-        class="flex items-center justify-between px-2"
-      >
-        <button>
-          <span @click="searchTargetWord(word)" class="text-sm">
-            {{ word }}
-          </span>
-        </button>
-        <button @click="clickRecentWordDeleteIcon(index)" class="flex">
-          <Icon icon="ph:x" />
-        </button>
-      </div>
-    </div>
+      @click-recent-word="(recentWord) => searchTargetWord(recentWord)"
+    />
     <Teleport to="body">
       <SearchModal v-if="searchStore.searchModalOpenState" />
     </Teleport>

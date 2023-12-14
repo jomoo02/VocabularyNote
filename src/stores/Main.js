@@ -8,7 +8,6 @@ export const useMainStore = defineStore('main', () => {
 
   const localWords = useStorage('mapWords', new Map(), localStorage);
   const localTrashCan = useStorage('trashCan', new Map(), localStorage);
-  const localRecentSearchWords = useStorage('recentWords', [], localStorage);
 
   const wordArr = ref([]);
 
@@ -82,7 +81,8 @@ export const useMainStore = defineStore('main', () => {
 
   // word delete
   function wordDelete(targetWord) {
-    const { nowTime, timestamp, afterTime, afterTimestamp} = getTimeAndTimestampAfterDay(14);
+    const { nowTime, timestamp, afterTime, afterTimestamp } =
+      getTimeAndTimestampAfterDay(14);
     const deleteWord = {
       timestamp,
       afterTimestamp,
@@ -140,37 +140,9 @@ export const useMainStore = defineStore('main', () => {
     trashCanWordKill(word);
   }
 
-  // recent words update
-  function recentWordUpdate(searchWord) {
-    // 중복 확인
-    const repeatCheckIndex = localRecentSearchWords.value.findIndex(
-      (word) => word === searchWord,
-    );
-    const recentWords =
-      repeatCheckIndex !== -1
-        ? [
-            ...localRecentSearchWords.value.slice(0, repeatCheckIndex),
-            ...localRecentSearchWords.value.slice(repeatCheckIndex + 1),
-          ]
-        : [...localRecentSearchWords.value];
-    recentWords.length >= 5 ? recentWords.pop() : '';
-
-    localRecentSearchWords.value = [searchWord, ...recentWords];
-  }
-
-  // recent words delete
-  function recentWordDelete(index) {
-    const recentWords = [
-      ...localRecentSearchWords.value.slice(0, index),
-      ...localRecentSearchWords.value.slice(index + 1),
-    ];
-    localRecentSearchWords.value = [...recentWords];
-  }
-
   return {
     wordArr,
     localTrashCan,
-    localRecentSearchWords,
     screenTransition,
     setWordDic,
     wordAdd,
@@ -181,7 +153,5 @@ export const useMainStore = defineStore('main', () => {
     trashCanWordDetail,
     trashCanWordKill,
     trashCanWordRestore,
-    recentWordUpdate,
-    recentWordDelete,
   };
 });
