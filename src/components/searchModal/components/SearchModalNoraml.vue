@@ -1,19 +1,21 @@
 <script setup>
 import TheModal from '../../TheModal.vue';
 import useNormalCase from '../compositions/normalCase';
-import { useMainStore } from '../../../stores/Main';
+import { useNoteStore } from '../../note/compositions/noteStore';
 import { useSearchStore } from '../compositions/searchStore';
 import { onMounted } from 'vue';
 import { onKeyStroke } from '@vueuse/core';
+import { useRecentSearchStore } from '../../recentSearch/compositions/recentSearchStore';
 
 const props = defineProps({
   searchData: Array,
 });
 
-const mainStore = useMainStore();
+const noteStore = useNoteStore();
 const searchStore = useSearchStore();
+const recentRecentSearchStore = useRecentSearchStore();
 const searchWord = searchStore.targetWord;
-const { means: searchWordMeas } = useNormalCase(searchWord, props.searchData);
+const { means: searchWordMeans } = useNormalCase(searchWord, props.searchData);
 
 onMounted(() => {
   addRecentSearchWord();
@@ -26,12 +28,12 @@ function closeModal() {
 }
 
 function addWord() {
-  mainStore.wordAdd(searchWord, searchWordMeas.value);
+  noteStore.addWord({ word: searchWord, means: searchWordMeans });
   closeModal();
 }
 
 function addRecentSearchWord() {
-  mainStore.recentWordUpdate(searchWord);
+  recentRecentSearchStore.updateRecentSearchWords(searchWord);
 }
 </script>
 
@@ -41,7 +43,7 @@ function addRecentSearchWord() {
       {{ searchWord }}
     </template>
     <template #means>
-      <li v-for="mean in searchWordMeas" :key="mean" class="modal_means">
+      <li v-for="mean in searchWordMeans" :key="mean" class="modal_means">
         {{ mean }}
       </li>
     </template>

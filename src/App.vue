@@ -1,18 +1,32 @@
 <script setup>
-import WordList from './components/WordList.vue';
 import TheHeader from './components/TheHeader.vue';
-import { useMainStore } from '@/stores/Main';
+import NoteWordList from './components/note/components/NoteWordList.vue';
+import TrashCanWordList from './components/trashCan/components/TrashCanWordList.vue';
+import { ref, provide } from 'vue';
+import { useTrashCanStore } from './components/trashCan/compositions/trashCanStore';
 
-const mainStore = useMainStore();
-mainStore.setWordDic();
+const trashCanStore = useTrashCanStore();
+const isNoteMode = ref(true);
+
+trashCanStore.deleteExpiredWords();
+
+function changeMode() {
+  isNoteMode.value = !isNoteMode.value;
+}
+
+provide('mode', {
+  isNoteMode,
+  changeMode,
+});
 </script>
 
 <template>
   <header class="pb-16">
-    <TheHeader></TheHeader>
+    <TheHeader />
   </header>
   <main class="pt-[32px] px-10 md:px-24 lg:px-32 2xl:px-80 min-h-screen">
-    <WordList></WordList>
+    <NoteWordList v-if="isNoteMode" />
+    <TrashCanWordList v-else />
   </main>
 </template>
 

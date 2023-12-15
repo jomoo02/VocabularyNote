@@ -2,6 +2,8 @@
 import { useMainStore } from '../stores/Main';
 import WordCardV2 from './WordCardV2.vue';
 import WordTrashCanV2 from './WordTrashCanV2.vue';
+import TrashCanWordList from './trashCan/components/TrashCanWordList.vue';
+import NoteWordList from './note/components/NoteWordList.vue';
 
 const mainStore = useMainStore();
 </script>
@@ -9,24 +11,11 @@ const mainStore = useMainStore();
 <template>
   <div class="md:ml-10 lg:ml-32 xl:ml-36 2xl:ml-36">
     <template v-if="mainStore.screenTransition === 0">
-      <div class="grid md:grid-cols-2 md:gap-x-36">
-        <div
-          v-for="(word, index) in mainStore.wordArr"
-          :key="word"
-          class="mb-[32px]"
-        >
-          <WordCardV2
-            :word="word.word"
-            :means="word.means"
-            :check="word.check"
-            :time="word.time"
-            :index="index"
-          ></WordCardV2>
-        </div>
-      </div>
+      <NoteWordList />  
     </template>
     <template v-if="mainStore.screenTransition === 1">
-      <div>
+      <TrashCanWordList />
+      <!-- <div>
         <div
           v-for="word in mainStore.localTrashCan.values()"
           :key="word"
@@ -39,7 +28,7 @@ const mainStore = useMainStore();
             :afterTime="word.afterTime"
           ></WordTrashCanV2>
         </div>
-      </div>
+      </div> -->
     </template>
   </div>
 </template>

@@ -1,6 +1,6 @@
 <script setup>
 import { Icon } from '@iconify/vue';
-import { onMounted, onBeforeUnmount, ref, watch, computed } from 'vue';
+import { onMounted, onBeforeUnmount, ref, watch, computed, inject } from 'vue';
 import SearchModal from '../components/searchModal/components/SearchModal.vue';
 import { useSearchStore } from './searchModal/compositions/searchStore';
 import RecentSearch from './recentSearch/components/RecentSearch.vue';
@@ -8,10 +8,7 @@ import RecentSearch from './recentSearch/components/RecentSearch.vue';
 const INPUT_WORD = '단어를 입력해주세요';
 const CAN_NOT_INPUT_WORD = '단어를 입력할 수 없습니다';
 
-const props = defineProps({
-  available: Boolean,
-});
-
+const { isNoteMode } = inject('mode');
 const searchStore = useSearchStore();
 const inputWord = ref('');
 const recentWordsFocus = ref(false);
@@ -19,12 +16,12 @@ const inputRef = ref(null);
 const searchBtnRef = ref(null);
 
 const inputTextPlaceholder = computed(() => {
-  const placeholder = props.available ? INPUT_WORD : CAN_NOT_INPUT_WORD;
+  const placeholder = isNoteMode.value ? INPUT_WORD : CAN_NOT_INPUT_WORD;
   return placeholder;
 });
 
 const wordInputBackGroundColor = computed(() => {
-  const backGroundColor = props.available ? 'bg-white' : 'bg-[#cbd5e1]';
+  const backGroundColor = isNoteMode.value ? 'bg-white' : 'bg-[#cbd5e1]';
   return backGroundColor;
 });
 
@@ -43,7 +40,7 @@ onBeforeUnmount(() => {
 });
 
 watch(
-  () => props.available,
+  () => isNoteMode.value,
   (newValue) => toggleWordInputAvailable(!newValue),
 );
 watch(
@@ -54,7 +51,6 @@ watch(
 function toggleWordInputAvailable(booleanValue) {
   inputRef.value.disabled = booleanValue;
   searchBtnRef.value.disabled = booleanValue;
-  focusInput();
 }
 
 function focusInput() {
@@ -97,8 +93,11 @@ function searchInputWord() {
 
   searchTargetWord(searchWord);
 }
-</script>
 
+function inputEvent(event) {
+  inputWord.value = event.target.value;
+}
+</script>
 <template>
   <div id="inputContainer">
     <div
@@ -113,8 +112,9 @@ function searchInputWord() {
         :placeholder="inputTextPlaceholder"
         :value="inputWord"
         @keydown.enter="searchInputWord"
+        @keydown.esc="inputWord = ''"
         @focus="recentWordsFocus = true"
-        @input="(event) => (inputWord = event.target.value)"
+        @input="inputEvent"
         class="w-full px-2 focus:outline-0 bg-inherit"
       />
       <button ref="searchBtnRef" @click="searchInputWord">
