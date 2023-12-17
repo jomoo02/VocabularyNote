@@ -1,7 +1,7 @@
 <script setup>
 import TheModal from '../../TheModal.vue';
-import useErrorCase from '../compositions/errorCase';
-import { useSearchStore } from '../compositions/searchStore';
+import useErrorCase from '../composables/errorCase';
+import { useSearchStore } from '../composables/searchStore';
 import { onKeyStroke } from '@vueuse/core';
 
 const searchStore = useSearchStore();

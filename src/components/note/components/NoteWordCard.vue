@@ -2,8 +2,8 @@
 import { Icon } from '@iconify/vue';
 import { ref, computed } from 'vue';
 import NoteWordDetailModal from './NoteWordDetailModal.vue';
-import { useNoteStore } from '../compositions/noteStore';
-import { useTrashCanStore } from '../../trashcan/compositions/trashCanStore';
+import { useNoteStore } from '../composables/noteStore';
+import { useTrashCanStore } from '../../trashcan/composables/trashCanStore';
 
 const props = defineProps({
   word: String,
@@ -19,6 +19,10 @@ const openWordDetail = ref(false);
 
 const iconType = computed(() =>
   props.check ? 'carbon:checkbox-checked' : 'carbon:checkbox',
+);
+
+const checkWordStyle = computed(() =>
+  props.check ? 'opacity-60 line-through decoration-2' : '',
 );
 
 function toggleDetailOpen() {
@@ -50,12 +54,12 @@ function checkBtnClick() {
       </button>
       <span
         class="card_word"
-        :class="{ wordcheck_active: props.check }"
+        :class="checkWordStyle"
         @click="toggleDetailOpen"
         >{{ props.word }}</span
       >
     </div>
-    <div :class="{ wordcheck_active: props.check }">
+    <div :class="checkWordStyle">
       <li v-for="mean in means" :key="mean" class="card_content">
         {{ mean }}
       </li>
@@ -72,9 +76,3 @@ function checkBtnClick() {
     </Teleport>
   </div>
 </template>
-
-<style scoped>
-.wordcheck_active {
-  @apply opacity-60 line-through decoration-2;
-}
-</style>

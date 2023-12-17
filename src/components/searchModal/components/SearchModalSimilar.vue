@@ -1,7 +1,7 @@
 <script setup>
 import TheModal from '../../TheModal.vue';
-import useSimilarCase from '../compositions/similarCase';
-import { useSearchStore } from '../compositions/searchStore';
+import useSimilarCase from '../composables/similarCase';
+import { useSearchStore } from '../composables/searchStore';
 import { onKeyStroke } from '@vueuse/core';
 
 const props = defineProps({

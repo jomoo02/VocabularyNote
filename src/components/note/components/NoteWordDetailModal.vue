@@ -1,5 +1,5 @@
 <script setup>
-import TheModal from '../../TheModal.vue'
+import TheModal from '../../TheModal.vue';
 
 const props = defineProps({
   word: String,

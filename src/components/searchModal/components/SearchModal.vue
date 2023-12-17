@@ -3,9 +3,9 @@ import SearchModalNoraml from './SearchModalNoraml.vue';
 import SearchModalMissing from './SearchModalMissing.vue';
 import SearchModalSimilar from './SearchModalSimilar.vue';
 import SearchModalError from './SearchModalError.vue';
-import useSearchWord from '../compositions/searchWord';
+import useSearchWord from '../composables/searchWord';
 import { ref, watch } from 'vue';
-import { useSearchStore } from '../compositions/searchStore';
+import { useSearchStore } from '../composables/searchStore';
 import MODAL_CASE from '../constant';
 
 const searchStore = useSearchStore();

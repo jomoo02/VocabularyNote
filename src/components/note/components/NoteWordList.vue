@@ -1,5 +1,5 @@
 <script setup>
-import { useNoteStore } from '../compositions/noteStore';
+import { useNoteStore } from '../composables/noteStore';
 import NoteWordCard from './NoteWordCard.vue';
 import { computed } from 'vue';
 

@@ -3,7 +3,7 @@ import TheHeader from './components/TheHeader.vue';
 import NoteWordList from './components/note/components/NoteWordList.vue';
 import TrashCanWordList from './components/trashCan/components/TrashCanWordList.vue';
 import { ref, provide } from 'vue';
-import { useTrashCanStore } from './components/trashCan/compositions/trashCanStore';
+import { useTrashCanStore } from './components/trashCan/composables/trashCanStore';
 
 const trashCanStore = useTrashCanStore();
 const isNoteMode = ref(true);

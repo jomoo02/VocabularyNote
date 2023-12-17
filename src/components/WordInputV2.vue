@@ -2,7 +2,7 @@
 import { Icon } from '@iconify/vue';
 import { onMounted, onBeforeUnmount, ref, watch, computed, inject } from 'vue';
 import SearchModal from '../components/searchModal/components/SearchModal.vue';
-import { useSearchStore } from './searchModal/compositions/searchStore';
+import { useSearchStore } from './searchModal/composables/searchStore';
 import RecentSearch from './recentSearch/components/RecentSearch.vue';
 
 const INPUT_WORD = '단어를 입력해주세요';
@@ -43,6 +43,7 @@ watch(
   () => isNoteMode.value,
   (newValue) => toggleWordInputAvailable(!newValue),
 );
+
 watch(
   () => searchStore.searchModalOpenState,
   (newState) => toggleWordInputAvailable(newState),
@@ -98,6 +99,7 @@ function inputEvent(event) {
   inputWord.value = event.target.value;
 }
 </script>
+
 <template>
   <div id="inputContainer">
     <div

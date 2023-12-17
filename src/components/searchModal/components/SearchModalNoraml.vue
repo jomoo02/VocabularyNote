@@ -1,11 +1,11 @@
 <script setup>
 import TheModal from '../../TheModal.vue';
-import useNormalCase from '../compositions/normalCase';
-import { useNoteStore } from '../../note/compositions/noteStore';
-import { useSearchStore } from '../compositions/searchStore';
+import useNormalCase from '../composables/normalCase';
+import { useNoteStore } from '../../note/composables/noteStore';
+import { useSearchStore } from '../composables/searchStore';
 import { onMounted } from 'vue';
 import { onKeyStroke } from '@vueuse/core';
-import { useRecentSearchStore } from '../../recentSearch/compositions/recentSearchStore';
+import { useRecentSearchStore } from '../../recentSearch/composables/recentSearchStore';
 
 const props = defineProps({
   searchData: Array,

@@ -1,5 +1,5 @@
 <script setup>
-import { useTrashCanStore } from '../compositions/trashCanStore';
+import { useTrashCanStore } from '../composables/trashCanStore';
 import TrashCanWordCard from './TrashCanWordCard.vue';
 
 const trashCanStore = useTrashCanStore();

@@ -21,7 +21,7 @@ export const useNoteStore = defineStore('note', () => {
       means: toValue(means).toString(),
       check: false,
     };
-    console.log(wordInfo);
+
     checkWordExist(word);
 
     localNoteWords.value.set(word, wordInfo);

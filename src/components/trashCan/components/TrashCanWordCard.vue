@@ -1,7 +1,7 @@
 <script setup>
 import { computed, ref } from 'vue';
-import { useTrashCanStore } from '../compositions/trashCanStore';
-import { useNoteStore } from '../../note/compositions/noteStore';
+import { useTrashCanStore } from '../composables/trashCanStore';
+import { useNoteStore } from '../../note/composables/noteStore';
 import TrashCanWordDetailModal from './TrashCanWordDetailModal.vue';
 
 const props = defineProps({

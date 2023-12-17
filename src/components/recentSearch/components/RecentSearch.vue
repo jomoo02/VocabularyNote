@@ -1,5 +1,5 @@
 <script setup>
-import { useRecentSearchStore } from '../compositions/recentSearchStore';
+import { useRecentSearchStore } from '../composables/recentSearchStore';
 import { Icon } from '@iconify/vue';
 
 const RECENT_SEARCH_WORD = '최근 검색한 단어';
