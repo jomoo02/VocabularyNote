@@ -2,12 +2,18 @@
 import TheModal from '../../TheModal.vue';
 import useMissingCase from '../composables/missingCase';
 import { useSearchStore } from '../composables/searchStore';
+import { useTargetWordStore } from '../../wordInput/composables/targetWordStore';
 import { onKeyStroke } from '@vueuse/core';
+import { onMounted, onUnmounted } from 'vue';
 
 const searchStore = useSearchStore();
+const targetWordStore = useTargetWordStore();
 const { missingPhrase } = useMissingCase();
 
 onKeyStroke(['Enter'], () => closeModal());
+
+onMounted(() => console.log('missing open'));
+onUnmounted(() => console.log('missing close'));
 
 function closeModal() {
   searchStore.closeSearchModal();
@@ -17,7 +23,7 @@ function closeModal() {
 <template>
   <TheModal @click-close-icon="closeModal">
     <template #word>
-      {{ searchStore.targetWord }}
+      {{ targetWordStore.targetWord }}
     </template>
     <template #means>
       <li

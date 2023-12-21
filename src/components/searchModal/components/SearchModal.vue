@@ -4,19 +4,13 @@ import SearchModalMissing from './SearchModalMissing.vue';
 import SearchModalSimilar from './SearchModalSimilar.vue';
 import SearchModalError from './SearchModalError.vue';
 import useSearchWord from '../composables/searchWord';
-import { ref, watch } from 'vue';
-import { useSearchStore } from '../composables/searchStore';
 import MODAL_CASE from '../constant';
+import { storeToRefs } from 'pinia';
+import { useTargetWordStore } from '../../wordInput/composables/targetWordStore';
 
-const searchStore = useSearchStore();
-const searchWord = ref(searchStore.targetWord);
-
-watch(
-  () => searchStore.targetWord,
-  (newTargetWord) => (searchWord.value = newTargetWord),
-);
-
-const { data, searchCase, error } = useSearchWord(searchWord);
+const targetWordStore = useTargetWordStore();
+const { targetWord } = storeToRefs(targetWordStore);
+const { data, searchCase, error } = useSearchWord(targetWord);
 </script>
 
 <template>

@@ -2,20 +2,27 @@
 import TheModal from '../../TheModal.vue';
 import useSimilarCase from '../composables/similarCase';
 import { useSearchStore } from '../composables/searchStore';
+import { useTargetWordStore } from '../../wordInput/composables/targetWordStore';
 import { onKeyStroke } from '@vueuse/core';
+import { storeToRefs } from 'pinia';
+import { onUnmounted, onMounted } from 'vue';
 
 const props = defineProps({
   searchData: Array,
 });
+onMounted(() => console.log('similar open'));
+onUnmounted(() => console.log('similar close'));
 
 const searchStore = useSearchStore();
-const searchWord = searchStore.targetWord;
+
+const targetWordStore = useTargetWordStore();
+const { targetWord } = storeToRefs(targetWordStore);
 const { similarWords } = useSimilarCase(props.searchData);
 
 onKeyStroke(['Enter'], () => closeModal());
 
 function clickSimilarWord(similarWord) {
-  searchStore.searchSimilarWord(similarWord);
+  targetWordStore.setTargetWord(similarWord);
 }
 
 function closeModal() {
@@ -25,9 +32,7 @@ function closeModal() {
 
 <template>
   <TheModal @click-close-icon="closeModal">
-    <template #word>
-      {{ searchWord }}
-    </template>
+    <template #word> {{ targetWord }}와 유사한 단어 </template>
     <template #means>
       <div
         v-for="similarWord in similarWords"

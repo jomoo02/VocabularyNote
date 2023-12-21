@@ -3,7 +3,8 @@ import TheModal from '../../TheModal.vue';
 import useNormalCase from '../composables/normalCase';
 import { useNoteStore } from '../../note/composables/noteStore';
 import { useSearchStore } from '../composables/searchStore';
-import { onMounted } from 'vue';
+import { useTargetWordStore } from '../../wordInput/composables/targetWordStore';
+import { onMounted, onUnmounted } from 'vue';
 import { onKeyStroke } from '@vueuse/core';
 import { useRecentSearchStore } from '../../recentSearch/composables/recentSearchStore';
 
@@ -12,14 +13,18 @@ const props = defineProps({
 });
 
 const noteStore = useNoteStore();
+const targetWordStore = useTargetWordStore();
 const searchStore = useSearchStore();
 const recentRecentSearchStore = useRecentSearchStore();
-const searchWord = searchStore.targetWord;
+const searchWord = targetWordStore.targetWord;
 const { means: searchWordMeans } = useNormalCase(searchWord, props.searchData);
 
 onMounted(() => {
   addRecentSearchWord();
 });
+
+onMounted(() => console.log('normal open'));
+onUnmounted(() => console.log('normal close'));
 
 onKeyStroke(['Enter'], () => addWord());
 

@@ -1,7 +1,7 @@
 <script setup>
 import { Icon } from '@iconify/vue';
 import { inject, computed } from 'vue';
-import WordInputV2 from './WordInputV2.vue';
+import WordInput from '../components/wordInput/components/WordInput.vue';
 
 const { isNoteMode, changeMode } = inject('mode');
 
@@ -14,7 +14,7 @@ const iconType = computed(() => (isNoteMode.value ? 'ph:trash' : 'ph:notepad'));
   >
     <div class="text-2xl md:text-4xl font-bold text-white">voca</div>
     <div class="relative w-3/5 md:w-1/2">
-      <WordInputV2 />
+      <WordInput />
     </div>
     <button @click="changeMode">
       <Icon :icon="iconType" width="34" height="34" color="#e4e4e7" />
