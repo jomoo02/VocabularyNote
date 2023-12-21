@@ -5,20 +5,21 @@ import useInputClasses from '../composables/inputClasses';
 import useFocusInput from '../composables/focusInput';
 import useToggleTagsDisabled from '../composables/toggleTagDisabled';
 import RecentSearch from '../../recentSearch/components/RecentSearch.vue';
-import { useSearchStore } from '../../searchModal/composables/searchStore';
+import { useSearchStore } from '../../search/composables/searchStore';
 import useValidateInputWord from '../composables/validateInputWord';
 import { storeToRefs } from 'pinia';
 import { useTargetWordStore } from '../composables/targetWordStore';
-import SearchModal from '../../searchModal/components/SearchModal.vue';
+import SearchContainer from '../../search/components/SearchContainer.vue';
 
 const CONTAINER_ID = 'inputContainer';
 
 const inputRef = ref(null);
 const searchBtnRef = ref(null);
 
+const { isNoteMode } = inject('mode');
+
 const searchModalStore = useSearchStore();
 const targetWordStore = useTargetWordStore();
-const { isNoteMode } = inject('mode');
 
 const { searchModalOpenState } = storeToRefs(searchModalStore);
 const inputWord = ref('');
@@ -91,6 +92,6 @@ function handleInputValidationAndSetTargetWord(e) {
     />
   </div>
   <Teleport to="body">
-    <SearchModal v-if="searchModalOpenState" />
+    <SearchContainer v-if="searchModalOpenState" />
   </Teleport>
 </template>

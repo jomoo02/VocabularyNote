@@ -9,6 +9,7 @@ import { storeToRefs } from 'pinia';
 import { useTargetWordStore } from '../../wordInput/composables/targetWordStore';
 
 const targetWordStore = useTargetWordStore();
+
 const { targetWord } = storeToRefs(targetWordStore);
 const { data, searchCase, error } = useSearchWord(targetWord);
 </script>
@@ -20,12 +21,14 @@ const { data, searchCase, error } = useSearchWord(targetWord);
   <div v-else-if="data">
     <SearchModalNoraml
       v-if="searchCase === MODAL_CASE.normal"
+      :word="targetWord"
       :searchData="data"
     />
     <SearchModalSimilar
       v-else-if="searchCase === MODAL_CASE.similar"
+      :word="targetWord"
       :searchData="data"
     />
-    <SearchModalMissing v-else />
+    <SearchModalMissing v-else :word="targetWord" />
   </div>
 </template>

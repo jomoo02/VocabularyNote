@@ -1,16 +1,10 @@
 import { toValue } from 'vue';
 
-function checkEmpty(word) {
-  return word === '';
-}
-
-function checkNotEnglish(word) {
-  const isNotEnglish = /[^a-zA-Z]/.test(word);
-  return isNotEnglish;
-}
-
 function useValidateInputWord(inputWord) {
   const word = toValue(inputWord);
+
+  const checkEmpty = (word) => word === '';
+  const checkNotEnglish = (word) => /[^a-zA-Z]/.test(word);
 
   return checkEmpty(word) || checkNotEnglish(word);
 }

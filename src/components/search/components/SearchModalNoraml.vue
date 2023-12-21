@@ -1,51 +1,42 @@
 <script setup>
 import TheModal from '../../TheModal.vue';
-import useNormalCase from '../composables/normalCase';
+import { useNormalCase } from '../composables/searchCase';
 import { useNoteStore } from '../../note/composables/noteStore';
 import { useSearchStore } from '../composables/searchStore';
-import { useTargetWordStore } from '../../wordInput/composables/targetWordStore';
-import { onMounted, onUnmounted } from 'vue';
+import { onMounted } from 'vue';
 import { onKeyStroke } from '@vueuse/core';
 import { useRecentSearchStore } from '../../recentSearch/composables/recentSearchStore';
 
 const props = defineProps({
+  word: String,
   searchData: Array,
 });
 
 const noteStore = useNoteStore();
-const targetWordStore = useTargetWordStore();
 const searchStore = useSearchStore();
 const recentRecentSearchStore = useRecentSearchStore();
-const searchWord = targetWordStore.targetWord;
-const { means: searchWordMeans } = useNormalCase(searchWord, props.searchData);
-
-onMounted(() => {
-  addRecentSearchWord();
-});
-
-onMounted(() => console.log('normal open'));
-onUnmounted(() => console.log('normal close'));
-
-onKeyStroke(['Enter'], () => addWord());
+const { means: searchWordMeans } = useNormalCase(props.word, props.searchData);
 
 function closeModal() {
   searchStore.closeSearchModal();
 }
 
 function addWord() {
-  noteStore.addWord({ word: searchWord, means: searchWordMeans });
+  noteStore.addWord({ word: props.word, means: searchWordMeans });
   closeModal();
 }
 
-function addRecentSearchWord() {
-  recentRecentSearchStore.updateRecentSearchWords(searchWord);
-}
+onKeyStroke(['Enter'], () => addWord());
+
+onMounted(() => {
+  recentRecentSearchStore.updateRecentSearchWords(props.word);
+});
 </script>
 
 <template>
   <TheModal @click-close-icon="closeModal">
     <template #word>
-      {{ searchWord }}
+      {{ props.word }}
     </template>
     <template #means>
       <li v-for="mean in searchWordMeans" :key="mean" class="modal_means">

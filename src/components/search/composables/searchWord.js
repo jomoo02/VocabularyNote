@@ -18,6 +18,7 @@ function useSearchWord(searchWord) {
 
   const decideSearchCase = (items) => {
     const { normal, similar, missing } = MODAL_CASE;
+
     if (items.length === 0) {
       return missing;
     }

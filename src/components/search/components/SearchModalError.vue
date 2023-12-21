@@ -1,33 +1,31 @@
 <script setup>
 import TheModal from '../../TheModal.vue';
-import useMissingCase from '../composables/missingCase';
+import { useErrorCase } from '../composables/searchCase';
 import { useSearchStore } from '../composables/searchStore';
-import { useTargetWordStore } from '../../wordInput/composables/targetWordStore';
 import { onKeyStroke } from '@vueuse/core';
-import { onMounted, onUnmounted } from 'vue';
+
+const props = defineProps({
+  word: String,
+});
 
 const searchStore = useSearchStore();
-const targetWordStore = useTargetWordStore();
-const { missingPhrase } = useMissingCase();
-
-onKeyStroke(['Enter'], () => closeModal());
-
-onMounted(() => console.log('missing open'));
-onUnmounted(() => console.log('missing close'));
+const { errorPhase } = useErrorCase();
 
 function closeModal() {
   searchStore.closeSearchModal();
 }
+
+onKeyStroke(['Enter'], () => closeModal());
 </script>
 
 <template>
   <TheModal @click-close-icon="closeModal">
     <template #word>
-      {{ targetWordStore.targetWord }}
+      {{ props.word }}
     </template>
     <template #means>
       <li
-        v-for="phrase in missingPhrase"
+        v-for="phrase in errorPhase"
         :key="phrase"
         class="modal_means list-none"
       >
