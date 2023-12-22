@@ -12,16 +12,17 @@ import { useTargetWordStore } from '../composables/targetWordStore';
 import SearchContainer from '../../search/components/SearchContainer.vue';
 
 const CONTAINER_ID = 'inputContainer';
+const ALERT_INPUT = '영어 단어를 입력해 주세요.';
 
 const inputRef = ref(null);
 const searchBtnRef = ref(null);
 
 const { isNoteMode } = inject('mode');
 
-const searchModalStore = useSearchStore();
+const searchStore = useSearchStore();
 const targetWordStore = useTargetWordStore();
 
-const { searchModalOpenState } = storeToRefs(searchModalStore);
+const { searchModalOpenState } = storeToRefs(searchStore);
 const inputWord = ref('');
 const recentWordsFocus = ref(false);
 const isInputDisabled = computed(
@@ -43,7 +44,7 @@ function clearInputWord() {
 
 function alertInputCondition(e) {
   if (!e.isComposing) {
-    window.alert('영어 단어를 입력해 주세요.');
+    window.alert(ALERT_INPUT);
     inputWord.value = '';
     focusInput();
   }
@@ -53,7 +54,7 @@ function setTargetWord(targetWord) {
   targetWordStore.setTargetWord(targetWord);
   inputWord.value = '';
   recentWordsFocus.value = false;
-  searchModalStore.openSearchModal();
+  searchStore.openSearchModal();
 }
 
 function handleInputValidationAndSetTargetWord(e) {

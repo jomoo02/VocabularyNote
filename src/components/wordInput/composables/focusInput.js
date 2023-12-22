@@ -1,10 +1,10 @@
 import { onMounted, onUnmounted } from 'vue';
 
-function useFocusInput(target, closest) {
+function useFocusInput(target, selector) {
   const EVENT = 'click';
 
   function outFocusInput(e) {
-    if (!e.target.closest(closest)) {
+    if (!e.target.closest(selector)) {
       target.value = false;
     }
   }

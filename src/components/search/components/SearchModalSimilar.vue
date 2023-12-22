@@ -22,6 +22,7 @@ function clickSimilarWord(similarWord) {
 function closeModal() {
   searchStore.closeSearchModal();
 }
+
 onKeyStroke(['Enter'], () => closeModal());
 </script>
 
